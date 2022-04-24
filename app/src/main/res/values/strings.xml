@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Rabbit Cage Monitoring</string>
+    <string name="descriptionLogo">Rabbit</string>
+    <string name="title">Sistem Monitoring Kondisi Kandang Kelinci</string>
+    <string name="description">Sistem ini merupakan pemeriksaan kesehatan berupa suhu dan kelembaban, pemberian pakan pada kelinci dan pembersihan kotoran kandang.</string>
+    <string name="nameButton">Get Started</string>
+</resources>
