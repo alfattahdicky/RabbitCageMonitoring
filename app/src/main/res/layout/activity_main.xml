@@ -13,41 +13,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <include layout="@layout/toolbar" />
-
-        <!--  Clock  -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/blue_300"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/iconClock"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="14dp"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/description_icon_clock"
-                android:src="@drawable/clock" />
-
-            <TextView
-                android:id="@id/dayView"
-                style="@style/TextStyle.Clock"
-                android:layout_toEndOf="@+id/iconClock"
-                android:text="Sabtu, 20 April 2022 "/>
-
-            <TextView
-                android:id="@+id/clockView"
-                android:layout_below="@+id/dayView"
-                android:layout_toEndOf="@+id/iconClock"
-                style="@style/TextStyle.Clock"
-                android:text="10 : 47 AM"/>
-
-
-        </RelativeLayout>
-
-
-
+        <include layout="@layout/clock_view" />
+        <include layout="@layout/cardview_cage"    />
 
     </LinearLayout>
 

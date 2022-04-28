@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextStyle"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:text="@string/title_cage" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="15dp"
+                tools:ignore="MissingConstraints">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:id="@+id/temperatureIcon"
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/temperature" />
+
+                    <TextView
+                        android:id="@+id/temperature_tv"
+                        style="@style/TextStyle"
+                        android:layout_toEndOf="@id/temperatureIcon"
+                        android:fontFamily="@font/poppins"
+                        android:text="24 C"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_below="@+id/temperature_tv"
+                        android:layout_toEndOf="@id/temperatureIcon"
+                        android:fontFamily="@font/poppins"
+                        android:text="Suhu Udara"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
