@@ -4,4 +4,5 @@
     <string name="title">Sistem Monitoring Kondisi Kandang Kelinci</string>
     <string name="description">Sistem ini merupakan pemeriksaan kesehatan berupa suhu dan kelembaban, pemberian pakan pada kelinci dan pembersihan kotoran kandang.</string>
     <string name="nameButton">Get Started</string>
+    <string name="description_icon_clock">Clock View</string>
 </resources>
