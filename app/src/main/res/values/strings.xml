@@ -6,4 +6,6 @@
     <string name="nameButton">Get Started</string>
     <string name="description_icon_clock">Clock View</string>
     <string name="title_cage">Kondisi Kandang</string>
+    <string name="temperature">Suhu Udara</string>
+    <string name="humidity_text">Kelembaban</string>
 </resources>

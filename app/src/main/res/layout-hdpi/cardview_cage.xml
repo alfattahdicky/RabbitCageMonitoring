@@ -31,45 +31,7 @@
             android:rowCount="2">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="160dp"
-                style="@style/ItemCardStyleGrid.Size"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                tools:ignore="MissingConstraints">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="8dp"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/temperatureIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/temperature" />
-
-                    <TextView
-                        android:id="@+id/temperature_tv"
-                        style="@style/TextStyle.CardText"
-                        android:layout_toEndOf="@id/temperatureIcon"
-                        android:text="24 C"
-                        android:textSize="26sp" />
-
-                    <TextView
-                        style="@style/TextStyle.CardText"
-                        android:layout_below="@+id/temperature_tv"
-                        android:layout_toEndOf="@id/temperatureIcon"
-                        android:text="@string/temperature"
-                        android:textSize="14sp" />
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="160dp"
+                android:layout_width="120dp"
                 style="@style/ItemCardStyleGrid.Size"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
@@ -79,14 +41,52 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingVertical="8dp">
+                    android:paddingVertical="10dp">
+
+                    <ImageView
+                        android:id="@+id/temperatureIcon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/temperature" />
+
+                    <TextView
+                        android:id="@+id/temperature_tv"
+                        style="@style/TextStyle.CardText"
+                        android:layout_toEndOf="@id/temperatureIcon"
+                        android:text="24 C"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        style="@style/TextStyle.CardText"
+                        android:layout_below="@+id/temperature_tv"
+                        android:layout_toEndOf="@id/temperatureIcon"
+                        android:text="@string/temperature"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="120dp"
+                style="@style/ItemCardStyleGrid.Size"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="10dp"
+                tools:ignore="MissingConstraints">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingVertical="10dp">
 
                     <ImageView
                         android:id="@+id/humidityIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="4dp"
                         android:src="@drawable/humidity" />
 
                     <TextView
@@ -94,21 +94,25 @@
                         style="@style/TextStyle.CardText"
                         android:layout_toEndOf="@id/humidityIcon"
                         android:text="80 %"
-                        android:textSize="26sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         style="@style/TextStyle.CardText"
                         android:layout_below="@+id/humidity_tv"
                         android:layout_toEndOf="@id/humidityIcon"
                         android:text="@string/humidity_text"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:layout_width="160dp"
-                style="@style/ItemCardStyleGrid.Size"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="2"
+                android:layout_margin="5dp"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
                 tools:ignore="MissingConstraints">
@@ -128,15 +132,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:layout_marginStart="10dp"
-                    android:paddingVertical="8dp"
-                    tools:ignore="RtlSymmetry">
+                    android:paddingVertical="8dp">
 
                     <ImageView
                         android:id="@+id/lightIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="12dp"
+                        android:layout_marginEnd="8dp"
                         android:src="@drawable/lamp" />
 
                     <TextView
@@ -144,10 +147,9 @@
                         style="@style/TextStyle.CardText"
                         android:layout_toEndOf="@id/lightIcon"
                         android:text="Lampu Mati"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </RelativeLayout>
-
 
             </androidx.cardview.widget.CardView>
 
@@ -181,8 +183,8 @@
 
                     <ImageView
                         android:id="@+id/fanIcon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="8dp"
                         android:src="@drawable/fan" />
@@ -193,7 +195,7 @@
                         android:layout_toEndOf="@id/fanIcon"
                         android:text="Fan
                         Mati"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </RelativeLayout>
 
@@ -201,8 +203,6 @@
 
 
         </GridLayout>
-
-
 
     </LinearLayout>
 
