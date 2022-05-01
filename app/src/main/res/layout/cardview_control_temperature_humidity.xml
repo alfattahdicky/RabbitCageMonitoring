@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+
+        <TextView
+            style="@style/TextStyle"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:text="@string/title_temperature_humidity" />
+
+        <TextView
+            style="@style/TextStyle"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="@string/subtitle_temperature"/>
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/range_slider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:valueFrom="0"
+            android:valueTo="30"
+            android:stepSize="5"
+            app:values="@array/slider_values_temperature"
+            app:trackColorActive="@color/white_600"
+            app:trackColorInactive="@color/gray_300"
+            app:trackHeight="10dp"
+            app:thumbElevation="3dp"
+            app:thumbColor="@color/white"
+            app:tickColorInactive="@color/gray"
+            />
+
+        <TextView
+            style="@style/TextStyle"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="@string/subtitle_humidity"/>
+
+        <com.google.android.material.slider.Slider
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:valueFrom="60"
+            android:valueTo="100"
+            android:value="70"
+            android:stepSize="10"
+            app:trackColorActive="@color/white_600"
+            app:trackColorInactive="@color/gray_300"
+            app:trackHeight="10dp"
+            app:thumbElevation="3dp"
+            app:thumbColor="@color/white"
+            app:tickColorInactive="@color/gray"/>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

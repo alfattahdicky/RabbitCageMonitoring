@@ -109,19 +109,21 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="160dp"
                 style="@style/ItemCardStyleGrid.Size"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
                 tools:ignore="MissingConstraints">
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="end"
                     android:layout_marginEnd="10dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
                     android:thumb="@drawable/thumb"
-                    app:track="@drawable/track"/>
+                    app:track="@drawable/track" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -158,19 +160,21 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="2"
                 android:layout_margin="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
                 tools:ignore="MissingConstraints">
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="end"
                     android:layout_marginEnd="10dp"
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
                     android:thumb="@drawable/thumb"
-                    app:track="@drawable/track"/>
+                    app:track="@drawable/track" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -184,15 +188,15 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="12dp"
                         android:src="@drawable/fan" />
 
                     <TextView
                         android:id="@+id/fan_tv"
                         style="@style/TextStyle.CardText"
                         android:layout_toEndOf="@id/fanIcon"
-                        android:text="Fan
-                        Mati"
+                        android:layout_marginEnd="40dp"
+                        android:text="Fan Mati"
                         android:textSize="20sp" />
 
                 </RelativeLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="slider_values_temperature">
+        <item>10</item>
+        <item>30</item>
+    </array>
+
+    <array name="slider_values_humidty">
+        <item>60</item>
+        <item>100</item>
+    </array>
+</resources>

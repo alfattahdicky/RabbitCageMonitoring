@@ -8,4 +8,7 @@
     <string name="title_cage">Kondisi Kandang</string>
     <string name="temperature">Suhu Udara</string>
     <string name="humidity_text">Kelembaban</string>
+    <string name="title_temperature_humidity"><![CDATA[Suhu & Kelembaban]]></string>
+    <string name="subtitle_temperature">Atur Suhu :</string>
+    <string name="subtitle_humidity">Atur Kelembaban</string>
 </resources>
