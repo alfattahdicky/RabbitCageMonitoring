@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+
+        <TextView
+            style="@style/TextStyle"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:text="@string/title_cleaning_dir"/>
+
+        <TextView
+            style="@style/TextStyle"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="@string/subtitle_cleaning_dirt"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/timeButton_one"
+                style="@style/TextStyle.ButtonTime"
+                app:backgroundTint="@color/white"
+                app:rippleColor="@color/blue_300"
+                android:text="@string/text_time"/>
+
+            <Button
+                android:id="@+id/timeButton_two"
+                style="@style/TextStyle.ButtonTime"
+                android:layout_marginHorizontal="16dp"
+                app:backgroundTint="@color/white"
+                app:rippleColor="@color/blue_300"
+                android:text="@string/text_time"/>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

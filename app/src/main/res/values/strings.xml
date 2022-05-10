@@ -11,4 +11,14 @@
     <string name="title_temperature_humidity"><![CDATA[Suhu & Kelembaban]]></string>
     <string name="subtitle_temperature">Atur Suhu :</string>
     <string name="subtitle_humidity">Atur Kelembaban</string>
+    <string name="title_eat_drink"><![CDATA[Makan & Minum]]></string>
+    <string name="subtitle_eat_drink">Atur Waktu :</string>
+    <string name="text_time">Time</string>
+    <string name="title_input_eat">Berat Makan :</string>
+    <string name="title_update">Update</string>
+    <string name="unit_eat">gr</string>
+    <string name="unit_drink">ml</string>
+    <string name="title_input_drink">Berat Minum :</string>
+    <string name="title_cleaning_dir">Pembersihan Kotoran</string>
+    <string name="subtitle_cleaning_dirt">Waktu Pembersihan</string>
 </resources>

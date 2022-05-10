@@ -10,6 +10,7 @@
     app:cardCornerRadius="20dp">
 
     <LinearLayout
+        android:id="@+id/layoutLinear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -33,7 +34,7 @@
             android:id="@+id/range_slider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:valueFrom="0"
+            android:valueFrom="10"
             android:valueTo="30"
             android:stepSize="5"
             app:values="@array/slider_values_temperature"
@@ -43,7 +44,15 @@
             app:thumbElevation="3dp"
             app:thumbColor="@color/white"
             app:tickColorInactive="@color/gray"
-            />
+            app:haloColor="@color/gray"/>
+
+        <TextView
+            android:id="@+id/tv_range_slider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:labelFor="@+id/range_slider"
+            android:contentDescription="TODO" />
 
         <TextView
             style="@style/TextStyle"
@@ -64,7 +73,8 @@
             app:trackHeight="10dp"
             app:thumbElevation="3dp"
             app:thumbColor="@color/white"
-            app:tickColorInactive="@color/gray"/>
+            app:tickColorInactive="@color/gray"
+            app:haloColor="@color/gray"/>
     </LinearLayout>
 
 

@@ -16,6 +16,8 @@
         <include layout="@layout/clock_view" />
         <include layout="@layout/cardview_cage" />
         <include layout="@layout/cardview_control_temperature_humidity" />
+        <include layout="@layout/cardview_eat_drink" />
+        <include layout="@layout/cardview_cleaning"/>
 
     </LinearLayout>
 

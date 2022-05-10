@@ -19,6 +19,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="TextStyle.ButtonTime">
+        <item name="android:elevation">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TextStyle.Clock">
         <item name="android:fontFamily">@font/poppins_medium</item>
         <item name="android:textSize">26sp</item>
@@ -41,11 +47,6 @@
         <item name="android:layout_margin">5dp</item>
     </style>
 
-    <style name="Theme.App" parent="">
-        ...
-        <item name="colorOnSurface">@color/black</item>
-        <item name="colorSecondary">@color/blue_300</item>
-    </style>
 
 
 
