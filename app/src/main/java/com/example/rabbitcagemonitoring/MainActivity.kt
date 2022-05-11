@@ -2,6 +2,7 @@ package com.example.rabbitcagemonitoring
 
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -44,6 +45,13 @@ class MainActivity : AppCompatActivity() {
         val arrCleanButton = arrayOf(cleanControlButtonOne, cleanControlButtonTwo)
         for(cleanButton in 0..arrCleanButton.size - 1) timePickers(arrCleanButton[cleanButton])
 
+        // move notification activity
+        val notificationButton: ImageButton = findViewById(R.id.btn_notification)
+
+        notificationButton.setOnClickListener {
+            val notificationIntent = Intent(this, NotificationActivity::class.java)
+            startActivity(notificationIntent)
+        }
     }
 
     private fun inputWeightEatAndDrink() {

@@ -12,13 +12,16 @@
         <entry key="app/src/main/res/layout-hdpi/cardview_cage.xml" value="0.33" />
         <entry key="app/src/main/res/layout-v28/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout-v28/activity_splash_screen.xml" value="0.28854166666666664" />
+        <entry key="app/src/main/res/layout/acitivity_listview.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.28489583333333335" />
+        <entry key="app/src/main/res/layout/activity_notification.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.33" />
         <entry key="app/src/main/res/layout/button_time.xml" value="0.5" />
         <entry key="app/src/main/res/layout/cardview_cage.xml" value="0.33" />
         <entry key="app/src/main/res/layout/cardview_cleaning.xml" value="0.5" />
         <entry key="app/src/main/res/layout/cardview_control_temperature_humidity.xml" value="0.5" />
         <entry key="app/src/main/res/layout/cardview_eat_drink.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/cardview_notification.xml" value="0.5" />
         <entry key="app/src/main/res/layout/clock_view.xml" value="0.28854166666666664" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.28854166666666664" />
       </map>
