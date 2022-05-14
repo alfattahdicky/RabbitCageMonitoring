@@ -1,6 +1,7 @@
 package com.example.rabbitcagemonitoring
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val arrEatDrinkButton = arrayOf(eatDrinkButtonMorning, eatDrinkButtonAfternoon, eatDrinkButtonNight)
         for (eatDrinkButton in 0..arrEatDrinkButton.size - 1) timePickers(arrEatDrinkButton[eatDrinkButton])
 
+
         // edit & update weight eat & drink
         inputWeightEatAndDrink()
 
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(notificationIntent)
         }
     }
+
 
     private fun inputWeightEatAndDrink() {
         val inputEatWeightTv: EditText = findViewById(R.id.input_eat)
@@ -107,49 +110,74 @@ class MainActivity : AppCompatActivity() {
 
         button.setOnClickListener {
             val timePickerDialog =
-                TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                TimePickerDialog(this, { _, hourOfDay, minute ->
                     val time: String = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute)
-                    button.text = time
 
-                    // button time for eat * drink
-                    when (button) {
-                        eatDrinkButtonMorning -> eatDrinkControlMorning = time
-                        eatDrinkButtonAfternoon -> eatDrinkControlAfternoon = time
-                        else -> eatDrinkControlNight = time
-                    }
+                    Log.d("hour", hourOfDay.toString())
+
+                    val conditionButtonMorning: Boolean = button === eatDrinkButtonMorning && hourOfDay < 12 && hourOfDay > 0
+                    val conditionButtonAfternoon: Boolean = button === eatDrinkButtonAfternoon && hourOfDay < 18 && hourOfDay > 12
+                    val conditionButtonNight: Boolean = button === eatDrinkButtonNight && hourOfDay < 24 && hourOfDay > 18
 
                     when {
-                        eatDrinkControlAfternoon == eatDrinkControlMorning -> {
-                            button.text = ""
-                            Toast.makeText(this, "Waktu anda sama",Toast.LENGTH_SHORT).show()
+                        conditionButtonMorning -> {
+                            eatDrinkControlMorning = time
+                            button.text = time
+
+                            Toast.makeText(this, "Waktu $eatDrinkControlMorning Pagi hari", Toast.LENGTH_SHORT).show()
                         }
-                        eatDrinkControlAfternoon == eatDrinkControlNight -> {
-                            button.text = ""
-                            Toast.makeText(this, "Waktu anda sama",Toast.LENGTH_SHORT).show()
+                        conditionButtonAfternoon -> {
+                            eatDrinkControlAfternoon = time
+                            button.text = time
+
+                            Toast.makeText(this, "Waktu $eatDrinkControlAfternoon Siang hari", Toast.LENGTH_SHORT).show()
                         }
-                        eatDrinkControlMorning == eatDrinkControlNight -> {
-                            button.text = ""
-                            Toast.makeText(this, "Waktu anda sama",Toast.LENGTH_SHORT).show()
+                        conditionButtonNight -> {
+                            eatDrinkControlNight = time
+                            button.text = time
+
+                            Toast.makeText(this, "Waktu $eatDrinkControlNight malam hari", Toast.LENGTH_SHORT).show()
                         }
-                        else -> button.text = time
+                        else -> {
+                            if(!conditionButtonMorning) {
+                                eatDrinkControlMorning = ""
+                                button.text = ""
+                            }else if(!conditionButtonAfternoon) {
+                                eatDrinkControlAfternoon = ""
+                                button.text = ""
+                            }else if(!conditionButtonNight) {
+                                eatDrinkControlNight = ""
+                                button.text = ""
+                            }
+                            Toast.makeText(this, "Waktu anda yang pilih salah", Toast.LENGTH_SHORT).show()
+                        }
                     }
 
-                    // button time for cleaning cage
-                    when(button) {
-                        cleanControlButtonOne -> cleanControlOne = time
-                        else -> cleanControlTwo = time
-                    }
+                    val conditionButtonCleanerOne: Boolean = button === cleanControlButtonOne && hourOfDay < 12 && hourOfDay > 0
+                    val conditionButtonCleanerTwo: Boolean = button === cleanControlButtonTwo && hourOfDay < 24 && hourOfDay > 12
 
-                    when (cleanControlOne) {
-                        cleanControlTwo -> {
-                            button.text = ""
-                            Toast.makeText(this, "Waktu anda sama",Toast.LENGTH_SHORT).show()
+                    when {
+                        conditionButtonCleanerOne -> {
+                            cleanControlOne = time
+                            button.text = time
+                            Toast.makeText(this, "Pembersihan dilakukan pukul $cleanControlOne", Toast.LENGTH_SHORT).show()
                         }
-                        else -> button.text = time
+                        conditionButtonCleanerTwo -> {
+                            cleanControlTwo = time
+                            button.text = time
+                            Toast.makeText(this, "Pembersihan dilakukan pukul $cleanControlTwo", Toast.LENGTH_SHORT).show()
+                        }else -> {
+                            if(!conditionButtonCleanerOne) {
+                                cleanControlOne = ""
+                                button.text = ""
+                            }else if (!conditionButtonCleanerTwo) {
+                                cleanControlTwo= ""
+                                button.text = ""
+                            }
+                            Toast.makeText(this, "Salah memilih waktu pembersihan", Toast.LENGTH_SHORT).show()
+                        }
                     }
 
-                    Log.d("button one", (cleanControlOne < cleanControlTwo).toString())
-                    Log.d("button two", (cleanControlTwo < cleanControlOne).toString())
                 }, hour, min, true)
             timePickerDialog.show()
         }
