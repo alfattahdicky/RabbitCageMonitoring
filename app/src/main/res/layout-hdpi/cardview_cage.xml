@@ -120,6 +120,7 @@
                 tools:ignore="MissingConstraints">
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchTv_light"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_gravity="end"
@@ -170,6 +171,7 @@
                 tools:ignore="MissingConstraints">
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchTv_fan"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_gravity="end"

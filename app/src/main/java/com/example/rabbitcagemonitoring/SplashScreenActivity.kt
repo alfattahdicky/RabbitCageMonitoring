@@ -20,5 +20,6 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         val mainIntent = Intent(this, MainActivity::class.java)
         startActivity(mainIntent)
+        finish()
     }
 }

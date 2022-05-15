@@ -31,7 +31,7 @@
             android:text="@string/subtitle_temperature"/>
 
         <com.google.android.material.slider.RangeSlider
-            android:id="@+id/range_slider"
+            android:id="@+id/rangeSlider_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:valueFrom="10"
@@ -47,11 +47,9 @@
             app:haloColor="@color/gray"/>
 
         <TextView
-            android:id="@+id/tv_range_slider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:labelFor="@+id/range_slider"
             android:contentDescription="TODO" />
 
         <TextView
@@ -62,6 +60,7 @@
             android:text="@string/subtitle_humidity"/>
 
         <com.google.android.material.slider.Slider
+            android:id="@+id/slider_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:valueFrom="60"
