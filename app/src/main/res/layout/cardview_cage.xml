@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    app:cardElevation="10dp"
+    app:cardElevation="7dp"
     app:cardCornerRadius="20dp">
 
     <LinearLayout
@@ -55,7 +55,7 @@
                         android:id="@+id/temperature_tv"
                         style="@style/TextStyle.CardText"
                         android:layout_toEndOf="@id/temperatureIcon"
-                        android:text="24 C"
+                        android:text="0 C"
                         android:textSize="26sp" />
 
                     <TextView
@@ -93,7 +93,7 @@
                         android:id="@+id/humidity_tv"
                         style="@style/TextStyle.CardText"
                         android:layout_toEndOf="@id/humidityIcon"
-                        android:text="80 %"
+                        android:text="0 %"
                         android:textSize="26sp" />
 
                     <TextView
@@ -139,14 +139,26 @@
                         android:layout_height="36dp"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="12dp"
-                        android:src="@drawable/lamp" />
+                        android:src="@drawable/lamp_off" />
 
                     <TextView
-                        android:id="@+id/light_tv"
+                        android:id="@+id/lightTv_text"
                         style="@style/TextStyle.CardText"
+                        android:layout_marginEnd="10dp"
                         android:layout_toEndOf="@id/lightIcon"
-                        android:text="Lampu Mati"
-                        android:textSize="20sp" />
+                        android:gravity="center_vertical"
+                        android:text="Lampu"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/lightTv_condition"
+                        style="@style/TextStyle.CardText"
+                        android:layout_below="@id/lightTv_text"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toEndOf="@id/lightIcon"
+                        android:gravity="center_vertical"
+                        android:text="Mati"
+                        android:textSize="16sp" />
 
                 </RelativeLayout>
 
@@ -192,12 +204,23 @@
                         android:src="@drawable/fan" />
 
                     <TextView
-                        android:id="@+id/fan_tv"
+                        android:id="@+id/fanTv_text"
                         style="@style/TextStyle.CardText"
+                        android:layout_marginEnd="10dp"
                         android:layout_toEndOf="@id/fanIcon"
-                        android:layout_marginEnd="40dp"
-                        android:text="Fan Mati"
-                        android:textSize="20sp" />
+                        android:gravity="center_vertical"
+                        android:text="Fan"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/fanTv_condition"
+                        style="@style/TextStyle.CardText"
+                        android:layout_below="@+id/fanTv_text"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toEndOf="@id/fanIcon"
+                        android:gravity="center_vertical"
+                        android:text="Mati"
+                        android:textSize="16sp" />
 
                 </RelativeLayout>
 
