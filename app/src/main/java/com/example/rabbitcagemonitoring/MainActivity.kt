@@ -1,8 +1,12 @@
 package com.example.rabbitcagemonitoring
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -69,6 +73,22 @@ class MainActivity : AppCompatActivity() {
         notificationButton.setOnClickListener {
             val notificationIntent = Intent(this, NotificationActivity::class.java)
             startActivity(notificationIntent)
+        }
+
+        createNotificationChannel()
+    }
+
+    private fun createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Notification Title"
+            val descriptionText = "Notification Description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("Rabbit Cage Monitoring", name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
@@ -481,7 +501,7 @@ class MainActivity : AppCompatActivity() {
                     button.text = eatDrinkControlMorning
                 }else if(!conditionButtonNight && button == eatDrinkButtonNight) {
                     eatDrinkControlNight = ""
-                    button.text = eatDrinkControlMorning
+                    button.text = eatDrinkControlNight
                 }
                 Toast.makeText(this, "Waktu anda yang pilih salah", Toast.LENGTH_SHORT).show()
             }
@@ -492,8 +512,6 @@ class MainActivity : AppCompatActivity() {
             "secondEatDrinkTime" to eatDrinkControlAfternoon,
             "thirdEatDrinkTime" to eatDrinkControlNight
         )
-
-        Log.d("Map Eat Drink Control", "$mapEatDrinkControl")
 
         database.updateChildren(mapEatDrinkControl).addOnSuccessListener {
             Log.d("Update data eatDrinkControl", "Success update data")

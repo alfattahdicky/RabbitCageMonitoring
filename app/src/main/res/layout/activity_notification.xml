@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".NotificationActivity">
 
     <LinearLayout
@@ -34,7 +35,19 @@
             android:textSize="26sp" />
 
     </LinearLayout>
+    <Button
+        android:id="@+id/btn_notificationTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Show Notification"/>
 
+    <Button
+        android:id="@+id/btn_notificationTvTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Show Notification 2"/>
 
 
 
