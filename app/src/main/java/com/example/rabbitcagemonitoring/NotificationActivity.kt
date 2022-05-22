@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.database.*
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.*
 
 const val channelID = "Rabbit Cage Monitoring"
@@ -27,6 +28,8 @@ const val descriptionExtra = "description"
 class NotificationActivity : AppCompatActivity() {
     private val CHANNEL_ID = "channel_id"
     private lateinit var database: DatabaseReference
+    lateinit var dataTimePref: DataTimePref
+    private var TAG: String = "Notification Activity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,41 +39,14 @@ class NotificationActivity : AppCompatActivity() {
         val btnNotificationTv: Button = findViewById(R.id.btn_notificationTv)
         val btnNotificationTvTwo: Button = findViewById(R.id.btn_notificationTvTwo)
 
-        createNotificationChannel()
+        dataTimePref = DataTimePref(applicationContext)
+        val dataTime = dataTimePref.getPreferences()
 
-//
-        btnNotificationTvTwo.setOnClickListener {
-            showNotificationEatDrink()
+        val time = LocalTime.parse(dataTime.eatDrinkTimeOne)
 
-            Toast.makeText(this, "Berhasil di click", Toast.LENGTH_SHORT).show()
-        }
-        // get data from firebase
+        Log.d(TAG, time.hour.toString())
 
-    }
-
-    private fun getDataFromFirebase() {
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
-
-        val getData = object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()) {
-                    val firstEatDrinkTime = snapshot.child("firstEatDrinkTime").value as String
-                    val secondEatDrinkTime = snapshot.child("secondEatDrinkTime").value as String
-                    val thirdEatDrinkTime = snapshot.child("thirdEatDrinkTime").value as String
-                    val firstCleanerTime = snapshot.child("firstCleanerTime").value as String
-                    val secondCleanerTime = snapshot.child("secondCleanerTime").value as String
-
-
-                    Log.d("Get data time picker", "Success get data time picker notification $firstEatDrinkTime")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("Get data time picker for notification", "Failed Get data because $error")
-            }
-
-        }
-        database.addValueEventListener(getData)
+        Toast.makeText(this, "$dataTime", Toast.LENGTH_SHORT).show()
     }
 
     private fun showNotificationEatDrink() {
@@ -78,14 +54,14 @@ class NotificationActivity : AppCompatActivity() {
         val currentTime: String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
         val calender = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 11)
-            set(Calendar.MINUTE, 17)
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 16)
         }
 
         val title = "Waktu Pembersihan"
         val description = "Waktu pembersihan dilakukan ${calender.timeInMillis}"
 
-        val intent = Intent(this, BroadCastReceiver::class.java)
+        val intent = Intent(this, NotificationReceiver::class.java)
         intent.putExtra(titleExtra, title)
         intent.putExtra(descriptionExtra, description)
 
@@ -103,7 +79,6 @@ class NotificationActivity : AppCompatActivity() {
             calender.timeInMillis,
             pendingIntent
         )
-
     }
 
     private fun createNotificationChannel() {
@@ -143,4 +118,6 @@ class NotificationActivity : AppCompatActivity() {
             notify(timeId.toInt(), builder.build())
         }
     }
+
+
 }

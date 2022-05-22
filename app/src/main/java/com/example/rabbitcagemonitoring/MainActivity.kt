@@ -16,20 +16,26 @@ import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
 import com.google.firebase.database.*
+import java.lang.Error
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    private var TAG: String = "Main Activity"
+
     private var eatDrinkControlMorning: String = ""
     private var eatDrinkControlAfternoon: String = ""
     private var eatDrinkControlNight: String = ""
     private var cleanControlOne: String = ""
     private var cleanControlTwo: String = ""
 
-    private lateinit var eatDrinkButtonMorning: Button
-    private lateinit var eatDrinkButtonAfternoon: Button
-    private lateinit var eatDrinkButtonNight: Button
+    private lateinit var morningTime: Button
+    private lateinit var afternoonTime: Button
+    private lateinit var nightTime: Button
     private lateinit var cleanControlButtonOne: Button
     private lateinit var cleanControlButtonTwo: Button
+    lateinit var dataTimePref: DataTimePref
+
 
     private lateinit var database: DatabaseReference
 
@@ -38,11 +44,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        eatDrinkButtonMorning = findViewById(R.id.timeButton_morning)
-        eatDrinkButtonAfternoon = findViewById(R.id.timeButton_afternoon)
-        eatDrinkButtonNight = findViewById(R.id.timeButton_night)
-        cleanControlButtonOne = findViewById(R.id.timeButton_one)
-        cleanControlButtonTwo = findViewById(R.id.timeButton_two)
+        dataTimePref = DataTimePref(this)
 
         // get data humidity & temperature from firebase
         getHumidityTemperature()
@@ -56,16 +58,14 @@ class MainActivity : AppCompatActivity() {
         // set & update humidity
         setUpdateHumidity()
 
-        // function time picker dialog for eat & drink
-        val arrEatDrinkButton = arrayOf(eatDrinkButtonMorning, eatDrinkButtonAfternoon, eatDrinkButtonNight)
-        for (eatDrinkButton in 0..arrEatDrinkButton.size - 1) timePickers(arrEatDrinkButton[eatDrinkButton])
-
         // edit & update weight eat & drink
         inputWeightEatAndDrink()
 
-        // time picker for cleaning cage
-        val arrCleanButton = arrayOf(cleanControlButtonOne, cleanControlButtonTwo)
-        for(cleanButton in 0..arrCleanButton.size - 1) timePickers(arrCleanButton[cleanButton])
+        // edit & update time eat & drink
+        timePickersEatDrink()
+
+        // edit & update time cleaner
+        timeCleanerEatDrink()
 
         // move notification activity
         val notificationButton: ImageButton = findViewById(R.id.btn_notification)
@@ -107,12 +107,12 @@ class MainActivity : AppCompatActivity() {
 
                     sliderTv.value = (valueHumidity as Long).toFloat()
 
-                    Log.d("Slider", "Success get data humidity slider")
+                    Log.d(TAG, "Success get data humidity slider")
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d("Slider", "Cannot get data humidity slider because $error")
+                Log.d(TAG, "Cannot get data humidity slider because $error")
             }
         }
         database.addValueEventListener(humidityListener)
@@ -126,9 +126,9 @@ class MainActivity : AppCompatActivity() {
             )
 
             database.updateChildren(mapValueSlider).addOnSuccessListener {
-                Log.d("Slider Update", "Success update value slider to firebase")
+                Log.d(TAG, "Success update value slider to firebase")
             }.addOnFailureListener {
-                Log.d("Slider Failed", "Failed Update value slider because $it")
+                Log.d(TAG, "Failed Update value slider because $it")
             }
         }
     }
@@ -150,15 +150,14 @@ class MainActivity : AppCompatActivity() {
 
                     rangeSliderTv.setValues((dataFirstValue as Long).toFloat(), (dataSecondValue as Long).toFloat())
 
-                    Toast.makeText(this@MainActivity, "Get data successfully range slider", 2000).show()
+                    Log.d(TAG, "Get data successfully range slider")
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@MainActivity, "Cannot get data range slider because $error", 3000).show()
+                Log.d(TAG, "Cannot get data range slider because $error")
             }
         }
-
         database.addValueEventListener(temperatureListener)
 
         //update data
@@ -219,15 +218,13 @@ class MainActivity : AppCompatActivity() {
                         fanIconTv.setImageResource(R.drawable.fan)
                     }
                 }
-
-                Toast.makeText(this@MainActivity, "Get data switch success" ,Toast.LENGTH_SHORT).show()
+                toast("Get data switch success")
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@MainActivity, "Get data failed because $error" ,Toast.LENGTH_LONG).show()
+                toast("Get data failed because $error")
             }
         }
-
         database.addValueEventListener(readListener)
 
         switchLightTv.setOnClickListener {
@@ -250,15 +247,12 @@ class MainActivity : AppCompatActivity() {
             val mapDataSwitch = mapOf<String, Any>(
                 "fan" to fan
             )
-
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
                 Toast.makeText(this@MainActivity, "Success Update Fan Switch", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 Toast.makeText(this@MainActivity, "failed update data fan because $it", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -275,9 +269,10 @@ class MainActivity : AppCompatActivity() {
                 humidityTv.text = humidity.toString() + " %"
                 temperatureTv.text = temperature.toString() + " C"
 
+                Log.d(TAG, "Succes get Data Humidity & temperature")
             }
         }.addOnFailureListener {
-            Toast.makeText(this, "Failed get Data from database", Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "Failed get Data from database")
         }
     }
 
@@ -305,10 +300,10 @@ class MainActivity : AppCompatActivity() {
                 eatTv.text = eatValue.toString()
                 drinkTv.text = drinkValue.toString()
 
-                Log.d("Tag","Success Get data eat & drink from firebase")
+                Log.d(TAG,"Success Get data eat & drink from firebase")
             }
         }.addOnFailureListener {
-            Log.d("Tag", "Failed Get data eat & drink firebase because$it")
+            Log.d(TAG, "Failed Get data eat & drink firebase because$it")
         }
 
         editEatButtonTv.setOnClickListener {
@@ -333,9 +328,9 @@ class MainActivity : AppCompatActivity() {
                 updateEatButtonTv.visibility = View.GONE
                 editEatButtonTv.visibility = View.VISIBLE
 
-                Toast.makeText(this, "Berat makan berhasil di update", Toast.LENGTH_SHORT).show()
+                toast("Berat makan berhasil di update")
             }.addOnFailureListener {
-                Log.d("Eat Weight", "Cannot update eat weigth $it")
+                toast("Cannot update eat weight $it")
             }
         }
 
@@ -362,163 +357,179 @@ class MainActivity : AppCompatActivity() {
                 updateDrinkButtonTv.visibility = View.GONE
                 editDrinkButtonTv.visibility = View.VISIBLE
 
-                Toast.makeText(this, "Berat minum berhasil di update", Toast.LENGTH_SHORT).show()
+                toast("Berat minum berhasil di update")
             }.addOnFailureListener {
-                Log.d("Drink Weight", "Cannot update eat weight $it")
+                toast("Gagal Update eat Weight")
             }
         }
-
     }
 
-    private fun timePickers(button: Button) {
-        // get calender
+    private fun handleClickButton(view: Button, time: String = ""){
+        val idMorningButton = 2131362278
+        val idAfternoonButton = 2131362277
+        val idNightButton = 2131362279
+        val idCleanerOne = 2131362280
+        val idCleanerTwo = 2131362281
+
+        when {
+            idMorningButton == view.id -> this.eatDrinkControlMorning = time
+            idAfternoonButton == view.id -> this.eatDrinkControlAfternoon = time
+            idNightButton == view.id -> this.eatDrinkControlNight = time
+            idCleanerOne == view.id -> this.cleanControlOne = time
+            idCleanerTwo == view.id -> this.cleanControlTwo = time
+        }
+
+
+        if(this.eatDrinkControlMorning != "" && this.eatDrinkControlAfternoon != ""
+                && this.eatDrinkControlNight != "" && this.cleanControlTwo != ""
+            && this.cleanControlOne != "") {
+
+            val dataTime = DataTime(
+                this.eatDrinkControlMorning,
+                this.eatDrinkControlAfternoon,
+                this.eatDrinkControlNight,
+                this.cleanControlOne,
+                this.cleanControlTwo
+            )
+            dataTimePref.setPreferences(dataTime)
+            toast(dataTime.toString())
+        }
+
+        try {
+            database = FirebaseDatabase.getInstance().getReference("DataCage")
+
+            val mapOfEatDrink = mapOf<String, String>(
+                "firstEatDrinkTime" to this.eatDrinkControlMorning,
+                "secondEatDrinkTime" to this.eatDrinkControlAfternoon,
+                "thirdEatDrinkTime" to this.eatDrinkControlNight
+            )
+
+            val mapOfCleaner = mapOf(
+                "firstCleanerTime" to this.cleanControlOne,
+                "secondCleanerTime" to this.cleanControlTwo
+            )
+
+            updateMapToFirebase(mapOfEatDrink, "Succes Update Eat Drink Time to Firebase")
+            updateMapToFirebase(mapOfCleaner, "Success Update Cleaner Time to Firebase")
+
+
+        }catch(error: Error) {
+            Log.d(TAG, "Failed Update Data $error")
+        }
+    }
+
+    private fun updateMapToFirebase(mapOfVariable: Map<String, String>, success: String, failed: String = "Failed Update") {
+        database.updateChildren(mapOfVariable).addOnSuccessListener {
+            Log.d(TAG, success)
+        }.addOnFailureListener {
+            Log.d(TAG, "$failed because $it")
+        }
+    }
+
+    private fun setOnClick(button: Button) {
         val cal = Calendar.getInstance()
         val hour = cal.get(Calendar.HOUR_OF_DAY)
         val min = cal.get(Calendar.MINUTE)
 
-        // get data time from firebase
-        getDataTime(button)
-
-        button.setOnClickListener {
-            val timePickerDialog =
-                TimePickerDialog(this, { _, hourOfDay, minute ->
-                    val time: String = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute)
-                    setTimeEatDrink(button, hourOfDay, time)
-                    setTimeCleaner(button, hourOfDay, time)
-                }, hour, min, true)
+        button.setOnClickListener {btn ->
+            val timePickerDialog = TimePickerDialog(this@MainActivity,
+                getTimePickerListener(button), hour, min, true)
             timePickerDialog.show()
         }
     }
 
-    private fun getDataTime(button: Button) {
-        // database instance
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
-
-        val getDataTimePicker = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()) {
-                    val firstEatDrinkTime = snapshot.child("firstEatDrinkTime").value
-                    val secondEatDrinkTime = snapshot.child("secondEatDrinkTime").value
-                    val thirdEatDrinkTime = snapshot.child("thirdEatDrinkTime").value
-                    val firstCleanerTime = snapshot.child("firstCleanerTime").value
-                    val secondCleanerTime = snapshot.child("secondCleanerTime").value
-
-                    when (button) {
-                        eatDrinkButtonMorning -> eatDrinkButtonMorning.text = firstEatDrinkTime.toString()
-                        eatDrinkButtonAfternoon -> eatDrinkButtonAfternoon.text = secondEatDrinkTime.toString()
-                        eatDrinkButtonNight -> eatDrinkButtonNight.text = thirdEatDrinkTime.toString()
-                        cleanControlButtonOne -> cleanControlButtonOne.text = firstCleanerTime.toString()
-                        else -> cleanControlButtonTwo.text = secondCleanerTime.toString()
-                    }
-
-                    Log.d("Get data Time picker", "Success get data")
+    private fun getTimePickerListener(button: Button): TimePickerDialog.OnTimeSetListener {
+        return TimePickerDialog.OnTimeSetListener{_, hourOfDay, minute ->
+            val time = "%02d:%02d".format(hourOfDay, minute)
+            when {
+                button === this.morningTime && hourOfDay < 12 && hourOfDay >= 0 -> {
+                    handleClickButton(button, time)
+                    button.text = time
                 }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("Get data Time picker", "Failed get data time picker because $error")
+                button === this.afternoonTime && hourOfDay < 18 && hourOfDay >= 12 -> {
+                    handleClickButton(button, time)
+                    button.text = time
+                }
+                button === this.nightTime && hourOfDay <= 24 && hourOfDay >= 18 -> {
+                    handleClickButton(button, time)
+                    button.text = time
+                }
+                else -> {
+                    toast("Atur waktu anda kembali!")
+                }
             }
 
         }
-
-        database.addValueEventListener(getDataTimePicker)
     }
 
-    private fun setTimeCleaner(button: Button, hourOfDay: Int, time: String) {
-        val conditionButtonCleanerOne: Boolean = button === cleanControlButtonOne && hourOfDay < 12 && hourOfDay > 0
-        val conditionButtonCleanerTwo: Boolean = button === cleanControlButtonTwo && hourOfDay < 24 && hourOfDay > 12
-
-        // database instance
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
-
-        when {
-            conditionButtonCleanerOne -> {
-                cleanControlOne = time
-                button.text = cleanControlOne
-                Toast.makeText(this, "Pembersihan dilakukan pukul $cleanControlOne", Toast.LENGTH_SHORT).show()
-            }
-            conditionButtonCleanerTwo -> {
-                cleanControlTwo = time
-                button.text = cleanControlTwo
-                Toast.makeText(this, "Pembersihan dilakukan pukul $cleanControlTwo", Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                if(!conditionButtonCleanerOne && button == cleanControlButtonOne) {
-                    cleanControlOne = ""
-                    button.text = cleanControlOne
-                }else if (!conditionButtonCleanerTwo && button == cleanControlButtonTwo) {
-                    cleanControlTwo= ""
-                    button.text = cleanControlTwo
-                }
-                Toast.makeText(this, "Salah memilih waktu pembersihan", Toast.LENGTH_SHORT).show()
-            }
-        }
-        val mapCleanControl = mapOf<String, String>(
-            "firstCleanerTime" to cleanControlOne,
-            "secondCleanerTime" to cleanControlTwo
-        )
-
-        database.updateChildren(mapCleanControl).addOnSuccessListener {
-            Log.d("Update data", "Success update data clean control")
-        }.addOnFailureListener {
-            Log.d("Updata data", "Failed update data clean control because $it")
-        }
-
+    private fun toast(text: String) {
+        Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
     }
 
-    private fun setTimeEatDrink(button: Button, hourOfDay: Int, time: String) {
-        val conditionButtonMorning: Boolean = button === eatDrinkButtonMorning && hourOfDay < 12 && hourOfDay > 0
-        val conditionButtonAfternoon: Boolean = button === eatDrinkButtonAfternoon && hourOfDay < 18 && hourOfDay > 12
-        val conditionButtonNight: Boolean = button === eatDrinkButtonNight && hourOfDay < 24 && hourOfDay > 18
+     private fun timePickersEatDrink(){
+         this.morningTime = findViewById(R.id.timeButton_morning)
+         this.afternoonTime = findViewById(R.id.timeButton_afternoon)
+         this.nightTime = findViewById(R.id.timeButton_night)
 
-        // database instance
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
+         // load shared preferences
+         if(dataTimePref.preference.contains(DataTimePref.EATDRINK_TIME_ONE)) {
+             val getDataTime = dataTimePref.getPreferences()
+             this.morningTime.text = getDataTime.eatDrinkTimeOne
+             this.afternoonTime.text = getDataTime.eatDrinkTimeTwo
+             this.nightTime.text = getDataTime.eatDrinkTimeThree
 
-        when {
-            conditionButtonMorning -> {
-                eatDrinkControlMorning = time
-                button.text = eatDrinkControlMorning
+             toast("Load Data")
+         }
 
-                Toast.makeText(this, "Waktu $eatDrinkControlMorning Pagi hari", Toast.LENGTH_SHORT).show()
-            }
-            conditionButtonAfternoon -> {
-                eatDrinkControlAfternoon = time
-                button.text = eatDrinkControlAfternoon
+         // set time
+         setOnClick(this.morningTime)
+         setOnClick(this.afternoonTime)
+         setOnClick(this.nightTime)
+     }
 
-                Toast.makeText(this, "Waktu $eatDrinkControlAfternoon Siang hari", Toast.LENGTH_SHORT).show()
-            }
-            conditionButtonNight -> {
-                eatDrinkControlNight = time
-                button.text = eatDrinkControlNight
+    private fun timeCleanerEatDrink() {
+        this.cleanControlButtonOne = findViewById(R.id.timeButton_one)
+        this.cleanControlButtonTwo = findViewById(R.id.timeButton_two)
 
-                Toast.makeText(this, "Waktu $eatDrinkControlNight malam hari", Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                if(!conditionButtonMorning && button == eatDrinkButtonMorning ) {
-                    eatDrinkControlMorning = ""
-                    button.text = eatDrinkControlMorning
-                }else if(!conditionButtonAfternoon && button == eatDrinkButtonAfternoon) {
-                    eatDrinkControlAfternoon = ""
-                    button.text = eatDrinkControlMorning
-                }else if(!conditionButtonNight && button == eatDrinkButtonNight) {
-                    eatDrinkControlNight = ""
-                    button.text = eatDrinkControlNight
-                }
-                Toast.makeText(this, "Waktu anda yang pilih salah", Toast.LENGTH_SHORT).show()
-            }
+        if(dataTimePref.preference.contains(DataTimePref.CLEANER_TIME_ONE)) {
+            val getDataCleaner = dataTimePref.getPreferences()
+
+            this.cleanControlButtonOne.text = getDataCleaner.cleanerTimeOne
+            this.cleanControlButtonTwo.text = getDataCleaner.cleanerTimeTwo
         }
 
-        val mapEatDrinkControl = mapOf<String, String>(
-            "firstEatDrinkTime" to eatDrinkControlMorning,
-            "secondEatDrinkTime" to eatDrinkControlAfternoon,
-            "thirdEatDrinkTime" to eatDrinkControlNight
-        )
+        // set time
+        setOnClickCleaner(this.cleanControlButtonOne)
+        setOnClickCleaner(this.cleanControlButtonTwo)
+    }
 
-        database.updateChildren(mapEatDrinkControl).addOnSuccessListener {
-            Log.d("Update data eatDrinkControl", "Success update data")
-        }.addOnFailureListener {
-            Log.d("Update data eatDrinkControl", "Failed update data because $it")
+    private fun setOnClickCleaner(button: Button) {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        button.setOnClickListener {
+            val timePickerDialog = TimePickerDialog(this@MainActivity, getTimePickerListenerCleaner(button),
+                hour, minute, true)
+            timePickerDialog.show()
         }
+    }
 
+    private fun getTimePickerListenerCleaner(button: Button): TimePickerDialog.OnTimeSetListener{
+        return TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+            val time = "%02d:%02d".format(hourOfDay, minute)
+            if(button === this.cleanControlButtonOne && hourOfDay < 12 && hourOfDay >= 0) {
+                handleClickButton(button, time)
+                button.text = time
+            } else if (button === this.cleanControlButtonTwo && hourOfDay > 12 && hourOfDay < 24) {
+                handleClickButton(button, time)
+                button.text = time
+            } else {
+                toast("Atur Waktu Pembersihan Anda Kembali!")
+            }
+        }
     }
 }
+
+
 
