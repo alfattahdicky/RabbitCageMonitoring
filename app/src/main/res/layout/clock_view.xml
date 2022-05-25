@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/blue_300"
@@ -7,24 +9,36 @@
 
     <ImageView
         android:id="@+id/iconClock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="14dp"
         android:contentDescription="@string/description_icon_clock"
-        android:src="@drawable/clock" />
+        android:src="@drawable/clock"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="7dp" />
 
-        <TextView
-            android:id="@id/dayView"
-            style="@style/TextStyle.Clock"
-            android:layout_toEndOf="@+id/iconClock"
-            android:text="Sabtu, 20 April 2022 "/>
+    <TextView
+        android:id="@id/dayView"
+        style="@style/TextStyle.Clock"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/iconClock"
+        android:text="Sabtu, 20 Februari 2022 "
+        app:layout_constraintBottom_toTopOf="@+id/timeView"
+        app:layout_constraintStart_toEndOf="@+id/iconClock"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/clockView"
-            android:layout_below="@+id/dayView"
-            android:layout_toEndOf="@+id/iconClock"
-            style="@style/TextStyle.Clock"
-            android:text="10 : 47 AM"/>
+    <TextView
+        android:id="@+id/timeView"
+        style="@style/TextStyle.Clock"
+        android:layout_below="@+id/dayView"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/iconClock"
+        android:text="10 : 47 AM"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iconClock"
+        tools:ignore="MissingConstraints" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

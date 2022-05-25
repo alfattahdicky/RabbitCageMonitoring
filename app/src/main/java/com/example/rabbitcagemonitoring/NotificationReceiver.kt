@@ -24,8 +24,8 @@ class NotificationReceiver: BroadcastReceiver() {
 
         val builder = NotificationCompat.Builder(context!!, channelID)
             .setSmallIcon(R.drawable.logo_rabbit)
-            .setContentTitle(intent.getStringExtra(titleExtra))
-            .setContentText(intent.getStringExtra(descriptionExtra))
+            .setContentTitle("Waktu Pembersihan")
+            .setContentText("Sedang dilakukan")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

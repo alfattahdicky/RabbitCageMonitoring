@@ -9,6 +9,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -17,9 +19,12 @@ import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
 import com.google.firebase.database.*
 import java.lang.Error
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     private var TAG: String = "Main Activity"
 
@@ -46,8 +51,15 @@ class MainActivity : AppCompatActivity() {
 
         dataTimePref = DataTimePref(this)
 
+        // Update time for regards
+        toolbarUpdateTime()
+
+        // get time for display time
+        displayTime()
+
         // get data humidity & temperature from firebase
         getHumidityTemperature()
+
 
         // set & update light & fan from firebase
         setUpdateLightAndFan()
@@ -68,14 +80,19 @@ class MainActivity : AppCompatActivity() {
         timeCleanerEatDrink()
 
         // move notification activity
+        moveNotificationActivity()
+
+        // channel notification
+        createNotificationChannel()
+    }
+
+    private fun moveNotificationActivity() {
         val notificationButton: ImageButton = findViewById(R.id.btn_notification)
 
         notificationButton.setOnClickListener {
             val notificationIntent = Intent(this, NotificationActivity::class.java)
             startActivity(notificationIntent)
         }
-
-        createNotificationChannel()
     }
 
     private fun createNotificationChannel() {
@@ -89,6 +106,55 @@ class MainActivity : AppCompatActivity() {
 
             val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
+    private fun displayTime() {
+        val dayTv: TextView = findViewById(R.id.dayView)
+        val timeTv: TextView = findViewById(R.id.timeView)
+
+        val arrayMonth = arrayOf("Januari", "Feburari", "Maret", "April", "Mei", "Juni", "Juli",
+            "Agustus", "September", "November", "Desember")
+        val arrayDay = arrayOf("Senin","Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu")
+        val currentTime = Calendar.getInstance()
+        val year = currentTime.get(Calendar.YEAR)
+        val month = currentTime.get(Calendar.MONTH)
+        val dayWeek = currentTime.get(Calendar.DAY_OF_WEEK)
+        val dayMonth = currentTime.get(Calendar.DAY_OF_MONTH)
+
+        val handler = Handler()
+        handler.post(object: Runnable {
+            override fun run() {
+                val clockFormat = SimpleDateFormat("HH:mm:ss")
+                timeTv.text = clockFormat.format(Date())
+
+                handler.postDelayed(this, 1000)
+            }
+        })
+        dayTv.text = "${arrayDay[dayWeek - 2]}, $dayMonth ${arrayMonth[month]} $year"
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun toolbarUpdateTime() {
+        val tvIconTime: ImageView = findViewById(R.id.icon_day)
+        val textTime: TextView = findViewById(R.id.text_day)
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+
+        when (hour) {
+            in 0..11 -> {
+                tvIconTime.setImageResource(R.drawable.sun_cloud)
+                textTime.text = "Good Morning"
+            }
+            in 12..17 -> {
+                tvIconTime.setImageResource(R.drawable.sun)
+                textTime.text = "Good Afternoon"
+            }
+            in 18..23 -> {
+                tvIconTime.setImageResource(R.drawable.moon)
+                textTime.text = "Good Night"
+            }
         }
     }
 
@@ -365,35 +431,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleClickButton(view: Button, time: String = ""){
+
         val idMorningButton = 2131362278
         val idAfternoonButton = 2131362277
         val idNightButton = 2131362279
         val idCleanerOne = 2131362280
         val idCleanerTwo = 2131362281
-
         when {
-            idMorningButton == view.id -> this.eatDrinkControlMorning = time
-            idAfternoonButton == view.id -> this.eatDrinkControlAfternoon = time
-            idNightButton == view.id -> this.eatDrinkControlNight = time
-            idCleanerOne == view.id -> this.cleanControlOne = time
-            idCleanerTwo == view.id -> this.cleanControlTwo = time
+            idMorningButton == view.id && view.isClickable -> this.eatDrinkControlMorning = time
+            idAfternoonButton == view.id && view.isClickable -> this.eatDrinkControlAfternoon = time
+            idNightButton == view.id && view.isClickable ->  this.eatDrinkControlNight = time
+            idCleanerOne == view.id && view.isClickable -> this.cleanControlOne = time
+            idCleanerTwo == view.id && view.isClickable -> this.cleanControlTwo = time
         }
-
-
-        if(this.eatDrinkControlMorning != "" && this.eatDrinkControlAfternoon != ""
-                && this.eatDrinkControlNight != "" && this.cleanControlTwo != ""
-            && this.cleanControlOne != "") {
-
-            val dataTime = DataTime(
-                this.eatDrinkControlMorning,
-                this.eatDrinkControlAfternoon,
-                this.eatDrinkControlNight,
-                this.cleanControlOne,
-                this.cleanControlTwo
-            )
-            dataTimePref.setPreferences(dataTime)
-            toast(dataTime.toString())
-        }
+        val dataTime = DataTime(
+            this.eatDrinkControlMorning,
+            this.eatDrinkControlAfternoon,
+            this.eatDrinkControlNight,
+            this.cleanControlOne,
+            this.cleanControlTwo
+        )
+        dataTimePref.setPreferences(dataTime)
+        Log.d(TAG, dataTime.toString())
 
         try {
             database = FirebaseDatabase.getInstance().getReference("DataCage")
@@ -478,6 +537,9 @@ class MainActivity : AppCompatActivity() {
              this.afternoonTime.text = getDataTime.eatDrinkTimeTwo
              this.nightTime.text = getDataTime.eatDrinkTimeThree
 
+             this.eatDrinkControlMorning = getDataTime.eatDrinkTimeOne.toString()
+             this.eatDrinkControlAfternoon = getDataTime.eatDrinkTimeTwo.toString()
+             this.eatDrinkControlNight = getDataTime.eatDrinkTimeThree.toString()
              toast("Load Data")
          }
 
@@ -496,6 +558,8 @@ class MainActivity : AppCompatActivity() {
 
             this.cleanControlButtonOne.text = getDataCleaner.cleanerTimeOne
             this.cleanControlButtonTwo.text = getDataCleaner.cleanerTimeTwo
+            this.cleanControlOne = getDataCleaner.cleanerTimeOne.toString()
+            this.cleanControlTwo = getDataCleaner.cleanerTimeTwo.toString()
         }
 
         // set time
