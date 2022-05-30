@@ -1,28 +1,24 @@
 package com.example.rabbitcagemonitoring
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.TimePickerDialog
-import android.content.Context
+import android.app.*
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
+import androidx.work.*
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
 import com.google.firebase.database.*
 import java.lang.Error
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.LocalTime
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(){
 
@@ -60,7 +56,6 @@ class MainActivity : AppCompatActivity(){
         // get data humidity & temperature from firebase
         getHumidityTemperature()
 
-
         // set & update light & fan from firebase
         setUpdateLightAndFan()
 
@@ -82,8 +77,10 @@ class MainActivity : AppCompatActivity(){
         // move notification activity
         moveNotificationActivity()
 
-        // channel notification
-        createNotificationChannel()
+    }
+
+    private fun parseTime(dataTime: String): LocalTime {
+        return LocalTime.parse(dataTime)
     }
 
     private fun moveNotificationActivity() {
@@ -92,20 +89,6 @@ class MainActivity : AppCompatActivity(){
         notificationButton.setOnClickListener {
             val notificationIntent = Intent(this, NotificationActivity::class.java)
             startActivity(notificationIntent)
-        }
-    }
-
-    private fun createNotificationChannel() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Notification Title"
-            val descriptionText = "Notification Description"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("Rabbit Cage Monitoring", name, importance).apply {
-                description = descriptionText
-            }
-
-            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
         }
     }
 
@@ -132,7 +115,7 @@ class MainActivity : AppCompatActivity(){
                 handler.postDelayed(this, 1000)
             }
         })
-        dayTv.text = "${arrayDay[dayWeek - 2]}, $dayMonth ${arrayMonth[month]} $year"
+//        dayTv.text = "${arrayDay[dayWeek - 2]}, $dayMonth ${arrayMonth[month]} $year"
     }
 
     @SuppressLint("SetTextI18n")
@@ -431,12 +414,11 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun handleClickButton(view: Button, time: String = ""){
-
-        val idMorningButton = 2131362278
-        val idAfternoonButton = 2131362277
-        val idNightButton = 2131362279
-        val idCleanerOne = 2131362280
-        val idCleanerTwo = 2131362281
+        val idMorningButton = 2131362274
+        val idAfternoonButton = 2131362273
+        val idNightButton = 2131362275
+        val idCleanerOne = 2131362276
+        val idCleanerTwo = 2131362277
         when {
             idMorningButton == view.id && view.isClickable -> this.eatDrinkControlMorning = time
             idAfternoonButton == view.id && view.isClickable -> this.eatDrinkControlAfternoon = time
@@ -452,6 +434,7 @@ class MainActivity : AppCompatActivity(){
             this.cleanControlTwo
         )
         dataTimePref.setPreferences(dataTime)
+        Log.d(TAG, view.id.toString())
         Log.d(TAG, dataTime.toString())
 
         try {
@@ -490,11 +473,27 @@ class MainActivity : AppCompatActivity(){
         val hour = cal.get(Calendar.HOUR_OF_DAY)
         val min = cal.get(Calendar.MINUTE)
 
-        button.setOnClickListener {btn ->
+        button.setOnClickListener {
             val timePickerDialog = TimePickerDialog(this@MainActivity,
                 getTimePickerListener(button), hour, min, true)
             timePickerDialog.show()
         }
+    }
+
+    private fun workRequest(time: Long, titleNotif: String, descriptionNotif: String): Operation {
+        val constraints = Constraints.Builder()
+            .setRequiresDeviceIdle(false)
+            .build()
+
+        val myWorkRequest = OneTimeWorkRequestBuilder<WorkerTime>()
+            .setInitialDelay(time, TimeUnit.SECONDS)
+            .setConstraints(constraints)
+            .setInputData(workDataOf(
+                "title" to titleNotif,
+                "description" to descriptionNotif
+            ))
+            .build()
+        return WorkManager.getInstance(applicationContext).enqueue(myWorkRequest)
     }
 
     private fun getTimePickerListener(button: Button): TimePickerDialog.OnTimeSetListener {
@@ -503,15 +502,21 @@ class MainActivity : AppCompatActivity(){
             when {
                 button === this.morningTime && hourOfDay < 12 && hourOfDay >= 0 -> {
                     handleClickButton(button, time)
+                    workRequest(setTimeCalendar(parseTime(time).hour, parseTime(time).minute), "Waktu Makan Pagi",
+                    "Saatnya kelinci anda makan pukul $time")
                     button.text = time
                 }
                 button === this.afternoonTime && hourOfDay < 18 && hourOfDay >= 12 -> {
                     handleClickButton(button, time)
+                    workRequest(setTimeCalendar(parseTime(time).hour, parseTime(time).minute), "Waktu Makan Siang",
+                        "Saatnya kelinci anda makan pukul $time")
                     button.text = time
                 }
                 button === this.nightTime && hourOfDay <= 24 && hourOfDay >= 18 -> {
                     handleClickButton(button, time)
                     button.text = time
+                    workRequest(setTimeCalendar(parseTime(time).hour, parseTime(time).minute),"Waktu Makan Malam",
+                        "Saatnya kelinci anda makan pukul $time")
                 }
                 else -> {
                     toast("Atur waktu anda kembali!")
@@ -519,6 +524,16 @@ class MainActivity : AppCompatActivity(){
             }
 
         }
+    }
+    private fun setTimeCalendar(hour: Int, min: Int): Long {
+        val cal = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, min)
+            set(Calendar.SECOND, 0)
+        }
+        val today = Calendar.getInstance()
+        return (cal.timeInMillis / 1000L) - (today.timeInMillis / 1000L)
     }
 
     private fun toast(text: String) {
@@ -584,9 +599,13 @@ class MainActivity : AppCompatActivity(){
             val time = "%02d:%02d".format(hourOfDay, minute)
             if(button === this.cleanControlButtonOne && hourOfDay < 12 && hourOfDay >= 0) {
                 handleClickButton(button, time)
+                workRequest(setTimeCalendar(parseTime(time).hour, parseTime(time).minute), "Waktu Pembersihan di Pagi hari",
+                    "Saatnya melakukan bersih-bersih pukul $time")
                 button.text = time
             } else if (button === this.cleanControlButtonTwo && hourOfDay > 12 && hourOfDay < 24) {
                 handleClickButton(button, time)
+                workRequest(setTimeCalendar(parseTime(time).hour, parseTime(time).minute), "Waktu Pembersihan di Sore hari",
+                    "Saatnya melakukan bersih-bersih pukul $time")
                 button.text = time
             } else {
                 toast("Atur Waktu Pembersihan Anda Kembali!")

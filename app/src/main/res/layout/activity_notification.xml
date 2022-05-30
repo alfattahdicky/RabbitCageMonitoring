@@ -11,8 +11,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:orientation="horizontal"
+        android:layout_margin="16dp"
         tools:ignore="UselessParent">
 
         <ImageButton
@@ -35,21 +35,12 @@
             android:textSize="26sp" />
 
     </LinearLayout>
-    <Button
-        android:id="@+id/btn_notificationTv"
-        android:layout_width="wrap_content"
+
+    <ListView
+        android:id="@+id/listViewNotification"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="Show Notification"/>
-
-    <Button
-        android:id="@+id/btn_notificationTvTwo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="Show Notification 2"/>
-
-
-
+        android:paddingStart="20dp"
+        tools:listitem="@layout/acitivity_listview"/>
 
 </LinearLayout>
