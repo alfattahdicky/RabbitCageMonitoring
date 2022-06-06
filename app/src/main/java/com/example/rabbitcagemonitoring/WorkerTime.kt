@@ -25,14 +25,16 @@ class WorkerTime(val context: Context, val params:WorkerParameters): Worker(cont
         Log.d(TAG, inputData.getString("title").toString())
         Log.d(TAG, inputData.getString("description").toString())
 
-        loadData()
+        if(this.data != null) {
+            loadData()
+        }
 
         saveDataNotification()
 
         return Result.success()
     }
 
-    fun loadData(): ArrayList<DataNotification> {
+    private fun loadData(): ArrayList<DataNotification> {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("Notification Prefrences", Context.MODE_PRIVATE)
 
         val gson = Gson()
@@ -40,8 +42,6 @@ class WorkerTime(val context: Context, val params:WorkerParameters): Worker(cont
         val type: Type = object : TypeToken<java.util.ArrayList<DataNotification?>?>() {}.type
 
         this.data = gson.fromJson(json, type)
-
-        if(this.data == null) this.data = ArrayList()
 
         return this.data
 

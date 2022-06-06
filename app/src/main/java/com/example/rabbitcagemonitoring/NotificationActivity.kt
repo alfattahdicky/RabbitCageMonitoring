@@ -33,10 +33,14 @@ class NotificationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_notification)
         this.dataTimePref = DataTimePref(applicationContext)
 
+        if(dataNotification != null) {
+            loadData()
+        }
 
-        loadData()
-
-
+//        for(i in this.dataNotification.indices) {
+//            val data = DataNotification(this.dataNotification[i].title, this.dataNotification[i].description)
+//            this.dataNotification.add(data)
+//        }
         val listView: ListView = findViewById(R.id.listViewNotification)
         listView.adapter = AdapterListView(this, this.dataNotification)
 
@@ -51,8 +55,10 @@ class NotificationActivity : AppCompatActivity() {
         val type: Type = object : TypeToken<ArrayList<DataNotification?>?>() {}.type
 
         this.dataNotification =  gson.fromJson(json, type)
-
         this.dataNotification.reverse()
+
+        Log.d(TAG, this.dataNotification.toString())
+
     }
 
     private fun backToHome() {
