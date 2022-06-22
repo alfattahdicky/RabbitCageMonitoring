@@ -47,6 +47,9 @@ class MainActivity : AppCompatActivity(){
 
         dataTimePref = DataTimePref(this)
 
+        val intent = Intent(this@MainActivity, MyService::class.java)
+        startService(intent)
+
         // Update time for regards
         toolbarUpdateTime()
 
