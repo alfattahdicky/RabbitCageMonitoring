@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity(){
         val dayTv: TextView = findViewById(R.id.dayView)
         val timeTv: TextView = findViewById(R.id.timeView)
 
-        val arrayMonth = arrayOf("Januari", "Feburari", "Maret", "April", "Mei", "Juni", "Juli",
+        val arrayMonth = arrayOf("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli",
             "Agustus", "September", "November", "Desember")
         val arrayDay = arrayOf("Senin","Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu")
         val currentTime = Calendar.getInstance()
@@ -313,19 +313,24 @@ class MainActivity : AppCompatActivity(){
         val temperatureTv: TextView = findViewById(R.id.temperature_tv)
 
         database = FirebaseDatabase.getInstance().getReference("DataCage")
-        database.get().addOnSuccessListener {
-            if(it.exists()) {
-                val humidity = it.child("humidity").value
-                val temperature = it.child("temperature").value
+        database.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()) {
+                    val humidity = snapshot.child("humidity").value
+                    val temperature = snapshot.child("temperature").value
 
-                humidityTv.text = humidity.toString() + " %"
-                temperatureTv.text = temperature.toString() + " C"
+                    humidityTv.text = humidity.toString() + " %"
+                    temperatureTv.text = temperature.toString() + " C"
 
-                Log.d(TAG, "Succes get Data Humidity & temperature")
+                    Log.d(TAG, "Success get Data Humidity & temperature")
+                }
             }
-        }.addOnFailureListener {
-            Log.d(TAG, "Failed get Data from database")
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d(TAG, "Failed Get data Humidity Temperature")
+            }
+
+        })
     }
 
 
