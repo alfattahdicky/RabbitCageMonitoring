@@ -6,12 +6,22 @@
     android:padding="12dp"
     android:id="@+id/header">
 
+        <ImageButton
+            android:id="@+id/back_main"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="-40dp"
+            android:layout_toStartOf="@+id/icon_day"
+            android:background="@drawable/ic_back"
+            android:backgroundTint="@color/black" />
+
         <ImageView
             android:id="@+id/icon_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="50dp"
             android:src="@drawable/sun_cloud" />
 
         <TextView
@@ -22,7 +32,7 @@
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@+id/icon_day"
             android:fontFamily="@font/poppins_bold"
-            android:text="Good Morning"
+            android:text="Selamat Pagi"
             android:textColor="@color/black"
             android:textSize="26sp" />
 

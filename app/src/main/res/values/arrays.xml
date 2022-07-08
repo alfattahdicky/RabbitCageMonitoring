@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="slider_values_temperature">
-        <item>20</item>
-        <item>35</item>
+        <item>20.0</item>
+        <item>35.0</item>
     </array>
 
     <array name="slider_values_humidity">

@@ -3,6 +3,7 @@ package com.example.rabbitcagemonitoring
 import android.annotation.SuppressLint
 import android.app.*
 import android.content.Intent
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -80,6 +81,18 @@ class MainActivity : AppCompatActivity(){
         // move notification activity
         moveNotificationActivity()
 
+        // back to splash screen
+        backAboutActivity()
+
+    }
+
+    private fun backAboutActivity() {
+        val btnBackSplash: ImageButton = findViewById(R.id.back_main)
+
+        btnBackSplash.setOnClickListener {
+            val intent = Intent(this, SplashScreenActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun parseTime(dataTime: String): LocalTime {
@@ -131,15 +144,15 @@ class MainActivity : AppCompatActivity(){
         when (hour) {
             in 0..11 -> {
                 tvIconTime.setImageResource(R.drawable.sun_cloud)
-                textTime.text = "Good Morning"
+                textTime.text = "Selamat Pagi"
             }
             in 12..17 -> {
                 tvIconTime.setImageResource(R.drawable.sun)
-                textTime.text = "Good Afternoon"
+                textTime.text = "Selamat Siang"
             }
             in 18..23 -> {
                 tvIconTime.setImageResource(R.drawable.moon)
-                textTime.text = "Good Night"
+                textTime.text = "Selamat Malam"
             }
         }
     }

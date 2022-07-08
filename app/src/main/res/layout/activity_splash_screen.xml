@@ -80,18 +80,38 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/button_splash"
-        android:layout_width="250dp"
+        android:id="@+id/button_about_us"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="52dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/rounded_corner_stroke"
+        android:paddingVertical="15dp"
+        android:text="Tentang Kami"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintEnd_toStartOf="@+id/button_splash"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button_splash"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:background="@drawable/rounded_corner"
         android:paddingVertical="15dp"
         android:text="@string/nameButton"
+        android:textAllCaps="false"
         android:textSize="16sp"
-        android:background="@drawable/rounded_corner"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@id/guideline2"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toEndOf="@+id/button_about_us" />
 
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -102,10 +122,9 @@
         android:visibility="gone"
         android:layout_marginBottom="52dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:trackColor="@color/blue_300"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="@+id/guideline3"
+        app:layout_constraintStart_toEndOf="@+id/button_about_us"
+        app:trackColor="@color/blue_300" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
