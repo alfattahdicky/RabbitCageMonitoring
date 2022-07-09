@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(){
 
-    private var TAG: String = "Main Activity"
+    private var TAG: String = "MainActivity"
 
     private var eatDrinkControlMorning: String = ""
     private var eatDrinkControlAfternoon: String = ""
@@ -119,8 +119,11 @@ class MainActivity : AppCompatActivity(){
         val currentTime = Calendar.getInstance()
         val year = currentTime.get(Calendar.YEAR)
         val month = currentTime.get(Calendar.MONTH)
-        val dayWeek = currentTime.get(Calendar.DAY_OF_WEEK)
         val dayMonth = currentTime.get(Calendar.DAY_OF_MONTH)
+        val day = currentTime.get(Calendar.WEEK_OF_MONTH)
+
+        Log.d(TAG, dayMonth.toString() + "day")
+        Log.d(TAG, day.toString())
 
         val handler = Handler()
         handler.post(object: Runnable {
@@ -131,7 +134,7 @@ class MainActivity : AppCompatActivity(){
                 handler.postDelayed(this, 1000)
             }
         })
-//        dayTv.text = "${arrayDay[dayWeek - 2]}, $dayMonth ${arrayMonth[month]} $year"
+        dayTv.text = "$dayMonth ${arrayMonth[month]} $year"
     }
 
     @SuppressLint("SetTextI18n")

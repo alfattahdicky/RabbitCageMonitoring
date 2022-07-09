@@ -28,13 +28,13 @@
             android:id="@+id/text_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@+id/icon_day"
             android:fontFamily="@font/poppins_bold"
             android:text="Selamat Pagi"
             android:textColor="@color/black"
-            android:textSize="26sp" />
+            android:textSize="24sp" />
 
         <ImageButton
             android:id="@+id/btn_notification"
