@@ -461,15 +461,21 @@ class MainActivity : AppCompatActivity(){
         try {
             database = FirebaseDatabase.getInstance().getReference("DataCage")
 
-            val mapOfEatDrink = mapOf<String, String>(
-                "firstEatDrinkTime" to this.eatDrinkControlMorning,
-                "secondEatDrinkTime" to this.eatDrinkControlAfternoon,
-                "thirdEatDrinkTime" to this.eatDrinkControlNight
+            val firstEatDrinkMillis = setTimeToMillis(this.eatDrinkControlMorning)
+            val secondEatDrinkMillis = setTimeToMillis(this.eatDrinkControlAfternoon)
+            val thirdEatDrinkMillis = setTimeToMillis(this.eatDrinkControlNight)
+            val firstCleanerMillis = setTimeToMillis(this.cleanControlOne)
+            val secondCleanerMillis = setTimeToMillis(this.cleanControlTwo)
+
+            val mapOfEatDrink = mapOf<String, Long>(
+                "firstEatDrinkTime" to firstEatDrinkMillis,
+                "secondEatDrinkTime" to secondEatDrinkMillis,
+                "thirdEatDrinkTime" to thirdEatDrinkMillis
             )
 
-            val mapOfCleaner = mapOf(
-                "firstCleanerTime" to this.cleanControlOne,
-                "secondCleanerTime" to this.cleanControlTwo
+            val mapOfCleaner = mapOf<String, Long>(
+                "firstCleanerTime" to firstCleanerMillis,
+                "secondCleanerTime" to secondCleanerMillis
             )
 
             updateMapToFirebase(mapOfEatDrink, "Succes Update Eat Drink Time to Firebase")
@@ -481,7 +487,18 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-    private fun updateMapToFirebase(mapOfVariable: Map<String, String>, success: String, failed: String = "Failed Update") {
+    private fun setTimeToMillis(time: String): Long {
+        val cal = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, parseTime(time).hour)
+            set(Calendar.MINUTE, parseTime(time).minute)
+            set(Calendar.SECOND, 0)
+        }
+
+        return cal.timeInMillis / 1000L
+    }
+
+    private fun updateMapToFirebase(mapOfVariable: Map<String, Long>, success: String, failed: String = "Failed Update") {
         database.updateChildren(mapOfVariable).addOnSuccessListener {
             Log.d(TAG, success)
         }.addOnFailureListener {
