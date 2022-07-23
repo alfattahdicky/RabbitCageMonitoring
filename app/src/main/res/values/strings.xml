@@ -22,4 +22,5 @@
     <string name="title_cleaning_dir">Pembersihan Kotoran</string>
     <string name="subtitle_cleaning_dirt">Waktu Pembersihan</string>
     <string name="title_notification">Notifikasi</string>
+    <string name="title_splash_screen">Rabbit Cage Monitoring</string>
 </resources>
