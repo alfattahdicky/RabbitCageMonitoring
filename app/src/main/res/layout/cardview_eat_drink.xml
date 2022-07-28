@@ -34,27 +34,76 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/timeButton_morning"
-                style="@style/TextStyle.ButtonTime"
-                app:backgroundTint="@color/white"
-                app:rippleColor="@color/blue_300"
-                android:text="@string/text_time"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/timeButton_afternoon"
-                style="@style/TextStyle.ButtonTime"
-                android:layout_marginHorizontal="16dp"
-                app:backgroundTint="@color/white"
-                app:rippleColor="@color/blue_300"
-                android:text="@string/text_time"/>
+                <Button
+                    android:id="@+id/timeButton_morning"
+                    style="@style/TextStyle.ButtonTime"
+                    app:backgroundTint="@color/white"
+                    app:rippleColor="@color/blue_300"
+                    android:text="@string/text_time"/>
 
-            <Button
-                android:id="@+id/timeButton_night"
-                style="@style/TextStyle.ButtonTime"
-                app:backgroundTint="@color/white"
-                app:rippleColor="@color/blue_300"
-                android:text="@string/text_time"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginTop="5dp"
+                    android:text="Pagi"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/timeButton_afternoon"
+                    style="@style/TextStyle.ButtonTime"
+                    android:layout_marginHorizontal="16dp"
+                    app:backgroundTint="@color/white"
+                    app:rippleColor="@color/blue_300"
+                    android:text="@string/text_time"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:text="Siang"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/timeButton_night"
+                    style="@style/TextStyle.ButtonTime"
+                    app:backgroundTint="@color/white"
+                    app:rippleColor="@color/blue_300"
+                    android:text="@string/text_time"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:text="Malam"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
