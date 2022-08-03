@@ -165,13 +165,13 @@ class MainActivity : AppCompatActivity(){
         val sliderTv: Slider = findViewById(R.id.slider_tv)
 
         // database instance
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
+        database = FirebaseDatabase.getInstance().getReference("DataKandang")
 
         // get data
         val humidityListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()) {
-                    val valueHumidity = snapshot.child("valueHumidity").value
+                    val valueHumidity = snapshot.child("nilaiKelembaban").value
 
                     sliderTv.value = (valueHumidity as Long).toFloat()
 
@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity(){
             val sliderValue = sliderTv.value
 
             val mapValueSlider = mapOf<String, Any>(
-                "valueHumidity" to sliderValue
+                "nilaiKelembaban" to sliderValue
             )
 
             database.updateChildren(mapValueSlider).addOnSuccessListener {
@@ -207,14 +207,14 @@ class MainActivity : AppCompatActivity(){
         val rangeSliderTv: RangeSlider = findViewById(R.id.rangeSlider_tv)
 
         // database instance
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
+        database = FirebaseDatabase.getInstance().getReference("DataKandang")
 
         // get data from database
         val temperatureListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()) {
-                    val dataFirstValue = snapshot.child("firstValueTemperature").value
-                    val dataSecondValue = snapshot.child("secondValueTemperature").value
+                    val dataFirstValue = snapshot.child("nilaiAwalSuhu").value
+                    val dataSecondValue = snapshot.child("nilaiAkhirSuhu").value
 
                     rangeSliderTv.setValues((dataFirstValue as Long).toFloat(), (dataSecondValue as Long).toFloat())
 
@@ -233,8 +233,8 @@ class MainActivity : AppCompatActivity(){
             val values = rangeSliderTv.values
 
             val mapValueRangeSlider = mapOf<String, Any>(
-                "firstValueTemperature" to values[0],
-                "secondValueTemperature" to values[1]
+                "nilaiAwalSuhu" to values[0],
+                "nilaiAkhirSuhu" to values[1]
             )
 
             database.updateChildren(mapValueRangeSlider).addOnSuccessListener {
@@ -259,14 +259,14 @@ class MainActivity : AppCompatActivity(){
         val fanIconTv: ImageView = findViewById(R.id.fanIcon)
 
         // get Database firebase
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
+        database = FirebaseDatabase.getInstance().getReference("DataKandang")
 
         val readListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 //                val data = snapshot.getValue(DataCage::class.java)
                 if(snapshot.exists()) {
-                    val dataLight = snapshot.child("light").value as Boolean
-                    val dataFan = snapshot.child("fan").value as Boolean
+                    val dataLight = snapshot.child("lampu").value as Boolean
+                    val dataFan = snapshot.child("kipas").value as Boolean
 
                     switchLightTv.isChecked = dataLight
                     if(switchLightTv.isChecked) {
@@ -299,7 +299,7 @@ class MainActivity : AppCompatActivity(){
             val light = switchLightTv.isChecked
 
             val mapDataSwitch = mapOf<String, Any>(
-                "light" to light
+                "lampu" to light
             )
 
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
@@ -313,7 +313,7 @@ class MainActivity : AppCompatActivity(){
             val fan = switchFanTv.isChecked
 
             val mapDataSwitch = mapOf<String, Any>(
-                "fan" to fan
+                "kipas" to fan
             )
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
                 Toast.makeText(this@MainActivity, "Success Update Fan Switch", Toast.LENGTH_SHORT).show()
@@ -328,12 +328,12 @@ class MainActivity : AppCompatActivity(){
         val humidityTv: TextView = findViewById(R.id.humidity_tv)
         val temperatureTv: TextView = findViewById(R.id.temperature_tv)
 
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
+        database = FirebaseDatabase.getInstance().getReference("DataKandang")
         database.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()) {
-                    val humidity = snapshot.child("humidity").value
-                    val temperature = snapshot.child("temperature").value
+                    val humidity = snapshot.child("kelembaban").value
+                    val temperature = snapshot.child("suhu").value
 
                     humidityTv.text = humidity.toString() + " %"
                     temperatureTv.text = temperature.toString() + " C"
@@ -362,13 +362,13 @@ class MainActivity : AppCompatActivity(){
         val drinkTv: TextView = findViewById(R.id.drink_tv)
 
         // database instance
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
+        database = FirebaseDatabase.getInstance().getReference("DataKandang")
 
         // get data eat & drink
         database.get().addOnSuccessListener {
             if(it.exists()) {
-                val eatValue = it.child("eatWeight").value
-                val drinkValue = it.child("drinkWeight").value
+                val eatValue = it.child("beratMakan").value
+                val drinkValue = it.child("beratMinum").value
 
                 eatTv.text = eatValue.toString()
                 drinkTv.text = drinkValue.toString()
@@ -391,7 +391,7 @@ class MainActivity : AppCompatActivity(){
             val valueEat = (inputEatWeightTv.text.toString()).toInt()
 
             val mapValueEat = mapOf<String, Int>(
-                "eatWeight" to valueEat
+                "beratMakan" to valueEat
             )
 
             database.updateChildren(mapValueEat).addOnSuccessListener {
@@ -420,7 +420,7 @@ class MainActivity : AppCompatActivity(){
             val valueDrink = (inputDrinkWeightTv.text.toString()).toInt()
 
             val mapValueDrink = mapOf<String, Int>(
-                "eatWeight" to valueDrink
+                "beratMinum" to valueDrink
             )
 
             database.updateChildren(mapValueDrink).addOnSuccessListener {
@@ -438,11 +438,13 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun handleClickButton(view: Button, time: String = ""){
-        val idMorningButton = 2131362274
-        val idAfternoonButton = 2131362273
-        val idNightButton = 2131362275
-        val idCleanerOne = 2131362276
-        val idCleanerTwo = 2131362277
+        val idMorningButton = 2131362279
+        val idAfternoonButton = 2131362278
+        val idNightButton = 2131362280
+        val idCleanerOne = 2131362281
+        val idCleanerTwo = 2131362282
+
+        Log.d(TAG, view.id.toString())
         when {
             idMorningButton == view.id && view.isClickable -> this.eatDrinkControlMorning = time
             idAfternoonButton == view.id && view.isClickable -> this.eatDrinkControlAfternoon = time
@@ -462,23 +464,17 @@ class MainActivity : AppCompatActivity(){
         Log.d(TAG, dataTime.toString())
 
         try {
-            database = FirebaseDatabase.getInstance().getReference("DataCage")
+            database = FirebaseDatabase.getInstance().getReference("DataKandang")
 
-            val firstEatDrinkMillis = setTimeToMillis(this.eatDrinkControlMorning)
-            val secondEatDrinkMillis = setTimeToMillis(this.eatDrinkControlAfternoon)
-            val thirdEatDrinkMillis = setTimeToMillis(this.eatDrinkControlNight)
-            val firstCleanerMillis = setTimeToMillis(this.cleanControlOne)
-            val secondCleanerMillis = setTimeToMillis(this.cleanControlTwo)
-
-            val mapOfEatDrink = mapOf<String, Long>(
-                "firstEatDrinkTime" to firstEatDrinkMillis,
-                "secondEatDrinkTime" to secondEatDrinkMillis,
-                "thirdEatDrinkTime" to thirdEatDrinkMillis
+            val mapOfEatDrink = mapOf<String, String>(
+                "waktuMakanMinumPertama" to this.eatDrinkControlMorning,
+                "waktuMakanMinumKedua" to this.eatDrinkControlAfternoon,
+                "waktuMakanMinumKetiga" to this.eatDrinkControlNight
             )
 
-            val mapOfCleaner = mapOf<String, Long>(
-                "firstCleanerTime" to firstCleanerMillis,
-                "secondCleanerTime" to secondCleanerMillis
+            val mapOfCleaner = mapOf<String, String>(
+                "waktuBersihPertama" to this.cleanControlOne,
+                "waktuBersihKedua" to this.cleanControlTwo
             )
 
             updateMapToFirebase(mapOfEatDrink, "Succes Update Eat Drink Time to Firebase")
@@ -501,7 +497,7 @@ class MainActivity : AppCompatActivity(){
         return cal.timeInMillis / 1000L
     }
 
-    private fun updateMapToFirebase(mapOfVariable: Map<String, Long>, success: String, failed: String = "Failed Update") {
+    private fun updateMapToFirebase(mapOfVariable: Map<String, String>, success: String, failed: String = "Failed Update") {
         database.updateChildren(mapOfVariable).addOnSuccessListener {
             Log.d(TAG, success)
         }.addOnFailureListener {

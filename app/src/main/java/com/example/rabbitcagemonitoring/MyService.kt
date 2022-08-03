@@ -14,15 +14,15 @@ class MyService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        database = FirebaseDatabase.getInstance().getReference("DataCage")
+        database = FirebaseDatabase.getInstance().getReference("DataKandang")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val weightListener = object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()) {
-                    val getEatWeight = snapshot.child("eatLoadCell").value
-                    val getDrinkWeight = snapshot.child("drinkLoadCell").value
+                    val getEatWeight = snapshot.child("beratMakanLoadCell").value
+                    val getDrinkWeight = snapshot.child("beratMinumLoadCell").value
 
                     if(getEatWeight.toString() == 0.toString()) {
                         NotificationHelper(applicationContext).createNotification(
