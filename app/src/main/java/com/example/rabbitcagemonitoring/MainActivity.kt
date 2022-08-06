@@ -84,6 +84,18 @@ class MainActivity : AppCompatActivity(){
         // back to splash screen
         backAboutActivity()
 
+        // move to history
+        historyActivity()
+
+    }
+
+    private fun historyActivity() {
+        val btnHistory: ImageButton = findViewById(R.id.btn_history)
+
+        btnHistory.setOnClickListener {
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun backAboutActivity() {

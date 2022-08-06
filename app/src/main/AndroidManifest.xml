@@ -14,9 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RabbitCageMonitoring">
         <activity
+            android:name=".HistoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
             android:name=".AboutUsActivity"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <service
             android:name=".MyService"
             android:enabled="true"
@@ -34,7 +39,6 @@
             android:name=".SplashScreenActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity
             android:name=".SplashScreenFirstActivity"
             android:exported="true"
