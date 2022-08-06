@@ -38,7 +38,7 @@ class WorkerTime(val context: Context, val params:WorkerParameters): Worker(cont
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("Notification Prefrences", Context.MODE_PRIVATE)
 
         val gson = Gson()
-        val json: String? = sharedPreferences.getString("Notification List", null)
+        val json: String? = sharedPreferences.getString("Notification List", "[]")
         val type: Type = object : TypeToken<java.util.ArrayList<DataNotification?>?>() {}.type
 
         this.data = gson.fromJson(json, type)

@@ -33,16 +33,16 @@ class NotificationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_notification)
         this.dataTimePref = DataTimePref(applicationContext)
 
-        if(dataNotification != null) {
+        if(this.dataNotification != null) {
             loadData()
+            val listView: ListView = findViewById(R.id.listViewNotification)
+            listView.adapter = AdapterListView(this, this.dataNotification)
         }
 
 //        for(i in this.dataNotification.indices) {
 //            val data = DataNotification(this.dataNotification[i].title, this.dataNotification[i].description)
 //            this.dataNotification.add(data)
 //        }
-        val listView: ListView = findViewById(R.id.listViewNotification)
-        listView.adapter = AdapterListView(this, this.dataNotification)
 
         backToHome()
     }
@@ -51,7 +51,7 @@ class NotificationActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = applicationContext.getSharedPreferences("Notification Prefrences", MODE_PRIVATE)
 
         val gson = Gson()
-        val json: String? = sharedPreferences.getString("Notification List", null)
+        val json: String? = sharedPreferences.getString("Notification List", "[]")
         val type: Type = object : TypeToken<ArrayList<DataNotification?>?>() {}.type
 
         this.dataNotification =  gson.fromJson(json, type)
