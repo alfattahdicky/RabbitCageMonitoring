@@ -767,7 +767,7 @@ class MainActivity : AppCompatActivity(){
                 workRequest(setTimeCalendar(parseTime(time).hour, parseTime(time).minute), "Waktu Pembersihan di Pagi hari",
                     "Saatnya melakukan bersih-bersih pukul $time")
                 button.text = time
-            } else if (button === this.cleanControlButtonTwo && hourOfDay > 12 && hourOfDay < 24) {
+            } else if (button === this.cleanControlButtonTwo && hourOfDay >= 12 && hourOfDay < 24) {
                 handleClickButton(button, time)
                 workRequest(setTimeCalendar(parseTime(time).hour, parseTime(time).minute), "Waktu Pembersihan di Sore hari",
                     "Saatnya melakukan bersih-bersih pukul $time")
