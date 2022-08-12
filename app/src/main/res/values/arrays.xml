@@ -6,7 +6,7 @@
     </array>
 
     <array name="slider_values_humidity">
-        <item>80</item>
-        <item>100</item>
+        <item>60.0</item>
+        <item>90.0</item>
     </array>
 </resources>
