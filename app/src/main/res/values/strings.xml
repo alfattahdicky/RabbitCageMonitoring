@@ -9,10 +9,10 @@
     <string name="temperature">Suhu Udara</string>
     <string name="humidity_text">Kelembaban</string>
     <string name="title_temperature_humidity"><![CDATA[Suhu & Kelembaban]]></string>
-    <string name="subtitle_temperature">Atur Suhu :</string>
-    <string name="subtitle_humidity">Atur Kelembaban</string>
+    <string name="subtitle_temperature">Atur Suhu Awal dan Akhir sebagai Acuan:</string>
+    <string name="subtitle_humidity">Atur Kelembaban Awal dan Akhir sebagai Acuan :</string>
     <string name="title_eat_drink"><![CDATA[Makan & Minum]]></string>
-    <string name="subtitle_eat_drink">Atur Waktu :</string>
+    <string name="subtitle_eat_drink">Pengaturan Makan &amp; Minum Melalui Waktu :</string>
     <string name="text_time">Time</string>
     <string name="title_input_eat">Berat Makan :</string>
     <string name="title_update">Update</string>
@@ -20,7 +20,8 @@
     <string name="unit_drink">ml</string>
     <string name="title_input_drink">Berat Minum :</string>
     <string name="title_cleaning_dir">Pembersihan Kotoran</string>
-    <string name="subtitle_cleaning_dirt">Waktu Pembersihan</string>
+    <string name="subtitle_cleaning_dirt">Pengaturan Pembersihan Kotoran Melalui Waktu:</string>
     <string name="title_notification">Notifikasi</string>
     <string name="title_splash_screen">Rabbit Cage Monitoring</string>
+    <string name="title_manual_settings"><![CDATA[Pengaturan Makan & Minum Secara Manual :]]></string>
 </resources>

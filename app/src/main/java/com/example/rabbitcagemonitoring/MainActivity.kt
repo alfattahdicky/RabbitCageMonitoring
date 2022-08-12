@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(){
 
-    private var TAG: String = "MainActivity"
+    private var TAG: String = "MainActivitys"
 
     private var eatDrinkControlMorning: String = ""
     private var eatDrinkControlAfternoon: String = ""
@@ -78,6 +78,12 @@ class MainActivity : AppCompatActivity(){
         // edit & update time cleaner
         timeCleanerEatDrink()
 
+        // set & update eat & drink switch from firebase
+        setUpdateEatDrink()
+
+        // set & update switch cleaner from firebase
+        setUpdateCleaner()
+
         // move notification activity
         moveNotificationActivity()
 
@@ -87,6 +93,115 @@ class MainActivity : AppCompatActivity(){
         // move to history
         historyActivity()
 
+    }
+
+    private fun setUpdateCleaner() {
+        val switchCleanTv: SwitchCompat = findViewById(R.id.switchTv_clean)
+        val textCleanTv: TextView = findViewById(R.id.cleanTv_condition)
+        // get Database firebase
+        database = FirebaseDatabase.getInstance().getReference("DataKandang")
+
+        val readListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()) {
+                    val dataClean = snapshot.child("servoPembersih").value as Boolean
+
+                    switchCleanTv.isChecked = dataClean
+                    if(switchCleanTv.isChecked) {
+                        textCleanTv.text = "Menyala"
+                    }else {
+                        textCleanTv.text = "Mati"
+                    }
+                }
+                toast("Get data switch success")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                toast("Get data failed because $error")
+            }
+        }
+        database.addValueEventListener(readListener)
+
+        switchCleanTv.setOnClickListener {
+            val clean = switchCleanTv.isChecked
+
+            val mapDataSwitch = mapOf<String, Any>(
+                "servoPembersih" to clean
+            )
+
+            database.updateChildren(mapDataSwitch).addOnSuccessListener {
+                Toast.makeText(this@MainActivity, "Success Update clean Switch", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(this@MainActivity, "failed update data because $it", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setUpdateEatDrink() {
+        val switchEatTv: SwitchCompat = findViewById(R.id.switchTv_eat)
+        val textEatTv: TextView = findViewById(R.id.eatTv_condition)
+
+        val switchDrinkTv: SwitchCompat = findViewById(R.id.switchTv_drink)
+        val textDrinkTv: TextView = findViewById(R.id.drinkTv_condition)
+
+        // get Database firebase
+        database = FirebaseDatabase.getInstance().getReference("DataKandang")
+
+        val readListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()) {
+                    val dataEat = snapshot.child("servoMakan").value as Boolean
+                    val dataDrink = snapshot.child("pumpMinum").value as Boolean
+
+                    switchEatTv.isChecked = dataEat
+                    if(switchEatTv.isChecked) {
+                        textEatTv.text = "Menyala"
+                    }else {
+                        textEatTv.text = "Mati"
+                    }
+
+                    switchDrinkTv.isChecked = dataDrink
+                    if(switchDrinkTv.isChecked) {
+                        textDrinkTv.text = "Menyala"
+                    }else {
+                        textDrinkTv.text= "Mati"
+                    }
+                }
+                toast("Get data switch success")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                toast("Get data failed because $error")
+            }
+        }
+        database.addValueEventListener(readListener)
+
+        switchEatTv.setOnClickListener {
+            val eat = switchEatTv.isChecked
+
+            val mapDataSwitch = mapOf<String, Any>(
+                "servoMakan" to eat
+            )
+
+            database.updateChildren(mapDataSwitch).addOnSuccessListener {
+                Toast.makeText(this@MainActivity, "Success Update eat Switch", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(this@MainActivity, "failed update data because $it", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        switchDrinkTv.setOnClickListener {
+            val drink = switchDrinkTv.isChecked
+
+            val mapDataSwitch = mapOf<String, Any>(
+                "pumpMinum" to drink
+            )
+            database.updateChildren(mapDataSwitch).addOnSuccessListener {
+                Toast.makeText(this@MainActivity, "Success Update Drink Switch", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(this@MainActivity, "failed update data drink because $it", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun historyActivity() {
@@ -174,41 +289,42 @@ class MainActivity : AppCompatActivity(){
 
     private fun setUpdateHumidity() {
         // get id component
-        val sliderTv: Slider = findViewById(R.id.slider_tv)
+        val rangeSliderKelembabanTv: RangeSlider = findViewById(R.id.rangeSliderKelembaban_tv)
 
         // database instance
         database = FirebaseDatabase.getInstance().getReference("DataKandang")
 
-        // get data
         val humidityListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()) {
-                    val valueHumidity = snapshot.child("nilaiKelembaban").value
+                    val dataFirstValue = snapshot.child("nilaiAwalKelembaban").value
+                    val dataSecondValue = snapshot.child("nilaiAkhirKelembaban").value
 
-                    sliderTv.value = (valueHumidity as Long).toFloat()
+                    rangeSliderKelembabanTv.setValues((dataFirstValue as Long).toFloat(), (dataSecondValue as Long).toFloat())
 
-                    Log.d(TAG, "Success get data humidity slider")
+                    Log.d(TAG, "Get data successfully range slider")
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d(TAG, "Cannot get data humidity slider because $error")
+                Log.d(TAG, "Cannot get data range slider because $error")
             }
         }
         database.addValueEventListener(humidityListener)
 
-        // update data
-        sliderTv.addOnChangeListener { _, _, _ ->
-            val sliderValue = sliderTv.value
+        //update data
+        rangeSliderKelembabanTv.addOnChangeListener { _, _, _ ->
+            val values = rangeSliderKelembabanTv.values
 
-            val mapValueSlider = mapOf<String, Any>(
-                "nilaiKelembaban" to sliderValue
+            val mapValueRangeSlider = mapOf<String, Any>(
+                "nilaiAwalKelembaban" to values[0],
+                "nilaiAkhirKelembaban" to values[1]
             )
 
-            database.updateChildren(mapValueSlider).addOnSuccessListener {
-                Log.d(TAG, "Success update value slider to firebase")
+            database.updateChildren(mapValueRangeSlider).addOnSuccessListener {
+                Log.d("Range Slider", "Success update data")
             }.addOnFailureListener {
-                Log.d(TAG, "Failed Update value slider because $it")
+                Log.d("Range Slider", "Failed update data because $it")
             }
         }
     }
