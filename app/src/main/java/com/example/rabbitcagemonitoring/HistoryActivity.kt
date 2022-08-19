@@ -48,6 +48,7 @@ class HistoryActivity : AppCompatActivity() {
                     for(dataSnapshot in snapshot.children) {
                         val riwayat = dataSnapshot.getValue(DataHistory::class.java)
                         historyArrayList.add(riwayat!!)
+                        historyArrayList.reverse()
                     }
                     historyRecyclerView.adapter = HistoryAdapter(historyArrayList)
 
