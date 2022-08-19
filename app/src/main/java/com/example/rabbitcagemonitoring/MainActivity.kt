@@ -124,9 +124,11 @@ class MainActivity : AppCompatActivity(){
 
         switchCleanTv.setOnClickListener {
             val clean = switchCleanTv.isChecked
+            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
-                "servoPembersih" to clean
+                "servoPembersih" to clean,
+                "mode" to mode
             )
 
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
@@ -178,9 +180,11 @@ class MainActivity : AppCompatActivity(){
 
         switchEatTv.setOnClickListener {
             val eat = switchEatTv.isChecked
+            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
-                "servoMakan" to eat
+                "servoMakan" to eat,
+                "mode" to mode
             )
 
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
@@ -192,9 +196,11 @@ class MainActivity : AppCompatActivity(){
 
         switchDrinkTv.setOnClickListener {
             val drink = switchDrinkTv.isChecked
+            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
-                "pumpMinum" to drink
+                "pumpMinum" to drink,
+                "mode" to mode
             )
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
                 Toast.makeText(this@MainActivity, "Success Update Drink Switch", Toast.LENGTH_SHORT).show()
@@ -425,9 +431,11 @@ class MainActivity : AppCompatActivity(){
 
         switchLightTv.setOnClickListener {
             val light = switchLightTv.isChecked
+            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
-                "lampu" to light
+                "lampu" to light,
+                "mode" to mode
             )
 
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
@@ -439,9 +447,11 @@ class MainActivity : AppCompatActivity(){
 
         switchFanTv.setOnClickListener {
             val fan = switchFanTv.isChecked
+            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
-                "kipas" to fan
+                "kipas" to fan,
+                "mode" to mode
             )
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
                 Toast.makeText(this@MainActivity, "Success Update Fan Switch", Toast.LENGTH_SHORT).show()
