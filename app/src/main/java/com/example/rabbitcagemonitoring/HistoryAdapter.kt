@@ -20,10 +20,10 @@ class HistoryAdapter(private val historyList: ArrayList<DataHistory>) :
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         val currentItem = historyList[position]
         holder.waktu.text = currentItem.waktu
-        holder.suhu.text = "Suhu : ${currentItem.suhu} C"
-        holder.kelembaban.text = "Kelembaban: ${currentItem.kelembaban} %"
-        holder.beratMakan.text = "Berat Makan: ${currentItem.beratMakan} gr"
-        holder.beratMinum.text = "Berat Minum: ${currentItem.beratMinum} ml"
+        holder.suhu.text = "Suhu : ${currentItem.suhu}"
+        holder.kelembaban.text = "Kelembaban: ${currentItem.kelembaban}"
+        holder.beratMakan.text = "Berat Makan: ${currentItem.beratMakan}"
+        holder.beratMinum.text = "Berat Minum: ${currentItem.beratMinum}"
     }
 
     override fun getItemCount(): Int {

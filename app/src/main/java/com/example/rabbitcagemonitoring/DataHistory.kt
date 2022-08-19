@@ -1,9 +1,9 @@
 package com.example.rabbitcagemonitoring
 
 data class DataHistory(
-    var suhu: Float? = null,
-    val kelembaban: Float? = null,
+    var suhu: String? = null,
+    val kelembaban: String? = null,
     val waktu: String? = null,
-    val beratMakan: Float? = null,
-    val beratMinum: Float? = null
+    val beratMakan: String? = null,
+    val beratMinum: String? = null
 )
