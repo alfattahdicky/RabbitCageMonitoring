@@ -14,6 +14,7 @@
         android:orientation="vertical">
         <include layout="@layout/toolbar" />
         <include layout="@layout/clock_view" />
+        <include layout="@layout/control_mode" />
         <include layout="@layout/cardview_cage" />
         <include layout="@layout/cardview_control_temperature_humidity" />
         <include layout="@layout/cardview_eat_drink" />

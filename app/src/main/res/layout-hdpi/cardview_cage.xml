@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginBottom="16dp"
     app:cardElevation="7dp"
     app:cardCornerRadius="20dp">
 
@@ -128,7 +129,8 @@
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
                     android:thumb="@drawable/thumb"
-                    app:track="@drawable/track" />
+                    app:track="@drawable/track"
+                    android:focusable="false"/>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

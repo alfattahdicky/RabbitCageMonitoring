@@ -11,10 +11,12 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.work.*
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
 import com.google.firebase.database.*
+import org.w3c.dom.Text
 import java.lang.Error
 import java.text.SimpleDateFormat
 import java.time.LocalTime
@@ -57,6 +59,9 @@ class MainActivity : AppCompatActivity(){
         // get time for display time
         displayTime()
 
+        // set mode
+        setModeControl()
+
         // get data humidity & temperature from firebase
         getHumidityTemperature()
 
@@ -95,6 +100,45 @@ class MainActivity : AppCompatActivity(){
 
     }
 
+    private fun setModeControl() {
+        val switchMode: SwitchCompat = findViewById(R.id.switchTv_mode)
+        val textModeAuto: TextView = findViewById(R.id.otomatis_text)
+        val textModeManual: TextView = findViewById(R.id.manual_text)
+
+        switchMode.setOnClickListener {
+            if(switchMode.isChecked) {
+                val mode = "manual"
+
+                val mapOfData = mapOf(
+                    "mode" to mode
+                )
+                database = FirebaseDatabase.getInstance().getReference("DataKandang")
+
+                database.updateChildren(mapOfData).addOnSuccessListener {
+                    textModeManual.setTextColor(ContextCompat.getColor(this, R.color.black))
+                    textModeAuto.setTextColor(ContextCompat.getColor(this, R.color.black_300))
+                }.addOnFailureListener {
+                    Log.d(TAG, it.message.toString())
+                }
+            }else {
+                val mode = "otomatis"
+
+                val mapOfData = mapOf(
+                    "mode" to mode
+                )
+                database = FirebaseDatabase.getInstance().getReference("DataKandang")
+
+                database.updateChildren(mapOfData).addOnSuccessListener {
+                    textModeManual.setTextColor(ContextCompat.getColor(this, R.color.black_300))
+                    textModeAuto.setTextColor(ContextCompat.getColor(this, R.color.black))
+                }.addOnFailureListener {
+                    Log.d(TAG, it.message.toString())
+                }
+            }
+        }
+
+    }
+
     private fun setUpdateCleaner() {
         val switchCleanTv: SwitchCompat = findViewById(R.id.switchTv_clean)
         val textCleanTv: TextView = findViewById(R.id.cleanTv_condition)
@@ -124,11 +168,9 @@ class MainActivity : AppCompatActivity(){
 
         switchCleanTv.setOnClickListener {
             val clean = switchCleanTv.isChecked
-            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
                 "servoPembersih" to clean,
-                "mode" to mode
             )
 
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
@@ -180,11 +222,9 @@ class MainActivity : AppCompatActivity(){
 
         switchEatTv.setOnClickListener {
             val eat = switchEatTv.isChecked
-            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
-                "servoMakan" to eat,
-                "mode" to mode
+                "servoMakan" to eat
             )
 
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
@@ -196,12 +236,11 @@ class MainActivity : AppCompatActivity(){
 
         switchDrinkTv.setOnClickListener {
             val drink = switchDrinkTv.isChecked
-            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
-                "pumpMinum" to drink,
-                "mode" to mode
+                "pumpMinum" to drink
             )
+
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
                 Toast.makeText(this@MainActivity, "Success Update Drink Switch", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
@@ -431,11 +470,9 @@ class MainActivity : AppCompatActivity(){
 
         switchLightTv.setOnClickListener {
             val light = switchLightTv.isChecked
-            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
-                "lampu" to light,
-                "mode" to mode
+                "lampu" to light
             )
 
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
@@ -447,11 +484,9 @@ class MainActivity : AppCompatActivity(){
 
         switchFanTv.setOnClickListener {
             val fan = switchFanTv.isChecked
-            val mode = "manual"
 
             val mapDataSwitch = mapOf<String, Any>(
-                "kipas" to fan,
-                "mode" to mode
+                "kipas" to fan
             )
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
                 Toast.makeText(this@MainActivity, "Success Update Fan Switch", Toast.LENGTH_SHORT).show()
