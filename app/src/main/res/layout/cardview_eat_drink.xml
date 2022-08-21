@@ -54,7 +54,7 @@
                     android:paddingStart="5dp"
                     android:paddingTop="5dp"
                     android:thumb="@drawable/thumb"
-                    app:track="@drawable/track" />
+                    app:track="@drawable/track"/>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

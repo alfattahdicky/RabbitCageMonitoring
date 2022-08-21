@@ -38,6 +38,11 @@ class MainActivity : AppCompatActivity(){
     private lateinit var nightTime: Button
     private lateinit var cleanControlButtonOne: Button
     private lateinit var cleanControlButtonTwo: Button
+    private lateinit var switchEat: SwitchCompat
+    private lateinit var switchDrink: SwitchCompat
+    private lateinit var switchClean: SwitchCompat
+    private lateinit var switchFan: SwitchCompat
+    private lateinit var switchLight: SwitchCompat
     lateinit var dataTimePref: DataTimePref
 
 
@@ -49,6 +54,12 @@ class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
 
         dataTimePref = DataTimePref(this)
+
+        switchEat = findViewById(R.id.switchTv_eat)
+        switchDrink = findViewById(R.id.switchTv_drink)
+        switchClean = findViewById(R.id.switchTv_clean)
+        switchFan = findViewById(R.id.switchTv_fan)
+        switchLight = findViewById(R.id.switchTv_light)
 
         val intent = Intent(this@MainActivity, MyService::class.java)
         startService(intent)
@@ -104,6 +115,43 @@ class MainActivity : AppCompatActivity(){
         val switchMode: SwitchCompat = findViewById(R.id.switchTv_mode)
         val textModeAuto: TextView = findViewById(R.id.otomatis_text)
         val textModeManual: TextView = findViewById(R.id.manual_text)
+        database = FirebaseDatabase.getInstance().getReference("DataKandang")
+
+        val readListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()) {
+                    val dataMode = snapshot.child("mode").value as String
+                    val data = dataMode == "manual"
+
+                    switchMode.isChecked = data
+                    if(switchMode.isChecked) {
+                        textModeManual.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
+                        textModeAuto.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black_300))
+                        this@MainActivity.switchClean.isClickable = true
+                        this@MainActivity.switchDrink.isClickable = true
+                        this@MainActivity.switchEat.isClickable = true
+                        this@MainActivity.switchLight.isClickable = true
+                        this@MainActivity.switchFan.isClickable = true
+                        Toast.makeText(this@MainActivity, "Mode Manual Aktif", Toast.LENGTH_LONG).show()
+                    }else {
+                        textModeManual.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black_300))
+                        textModeAuto.setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
+                        this@MainActivity.switchClean.isClickable = false
+                        this@MainActivity.switchDrink.isClickable = false
+                        this@MainActivity.switchEat.isClickable = false
+                        this@MainActivity.switchLight.isClickable = false
+                        this@MainActivity.switchFan.isClickable = false
+                        Toast.makeText(this@MainActivity, "Mode Otomatis Aktif", Toast.LENGTH_LONG).show()
+                    }
+                }
+                toast("Get data switch success")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                toast("Get data failed because $error")
+            }
+        }
+        database.addValueEventListener(readListener)
 
         switchMode.setOnClickListener {
             if(switchMode.isChecked) {
@@ -112,11 +160,16 @@ class MainActivity : AppCompatActivity(){
                 val mapOfData = mapOf(
                     "mode" to mode
                 )
-                database = FirebaseDatabase.getInstance().getReference("DataKandang")
 
                 database.updateChildren(mapOfData).addOnSuccessListener {
                     textModeManual.setTextColor(ContextCompat.getColor(this, R.color.black))
                     textModeAuto.setTextColor(ContextCompat.getColor(this, R.color.black_300))
+                    this@MainActivity.switchClean.isClickable = true
+                    this@MainActivity.switchDrink.isClickable = true
+                    this@MainActivity.switchEat.isClickable = true
+                    this@MainActivity.switchLight.isClickable = true
+                    this@MainActivity.switchFan.isClickable = true
+                    Toast.makeText(this@MainActivity, "Mode Manual Aktif", Toast.LENGTH_LONG).show()
                 }.addOnFailureListener {
                     Log.d(TAG, it.message.toString())
                 }
@@ -124,13 +177,22 @@ class MainActivity : AppCompatActivity(){
                 val mode = "otomatis"
 
                 val mapOfData = mapOf(
-                    "mode" to mode
+                    "mode" to mode,
+                    "servoMakan" to false,
+                    "servoPembersih" to false,
+                    "pumpMinum" to false,
+                    "kipas" to false,
+                    "lampu" to false,
                 )
-                database = FirebaseDatabase.getInstance().getReference("DataKandang")
-
                 database.updateChildren(mapOfData).addOnSuccessListener {
                     textModeManual.setTextColor(ContextCompat.getColor(this, R.color.black_300))
                     textModeAuto.setTextColor(ContextCompat.getColor(this, R.color.black))
+                    this@MainActivity.switchClean.isClickable = false
+                    this@MainActivity.switchDrink.isClickable = false
+                    this@MainActivity.switchEat.isClickable = false
+                    this@MainActivity.switchLight.isClickable = false
+                    this@MainActivity.switchFan.isClickable = false
+                    Toast.makeText(this@MainActivity, "Mode Otomatis Aktif", Toast.LENGTH_LONG).show()
                 }.addOnFailureListener {
                     Log.d(TAG, it.message.toString())
                 }
@@ -140,7 +202,6 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun setUpdateCleaner() {
-        val switchCleanTv: SwitchCompat = findViewById(R.id.switchTv_clean)
         val textCleanTv: TextView = findViewById(R.id.cleanTv_condition)
         // get Database firebase
         database = FirebaseDatabase.getInstance().getReference("DataKandang")
@@ -150,8 +211,8 @@ class MainActivity : AppCompatActivity(){
                 if(snapshot.exists()) {
                     val dataClean = snapshot.child("servoPembersih").value as Boolean
 
-                    switchCleanTv.isChecked = dataClean
-                    if(switchCleanTv.isChecked) {
+                    this@MainActivity.switchClean.isChecked = dataClean
+                    if(this@MainActivity.switchClean.isChecked) {
                         textCleanTv.text = "Menyala"
                     }else {
                         textCleanTv.text = "Mati"
@@ -166,8 +227,8 @@ class MainActivity : AppCompatActivity(){
         }
         database.addValueEventListener(readListener)
 
-        switchCleanTv.setOnClickListener {
-            val clean = switchCleanTv.isChecked
+        this.switchClean.setOnClickListener {
+            val clean = switchClean.isChecked
 
             val mapDataSwitch = mapOf<String, Any>(
                 "servoPembersih" to clean,
@@ -182,10 +243,7 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun setUpdateEatDrink() {
-        val switchEatTv: SwitchCompat = findViewById(R.id.switchTv_eat)
         val textEatTv: TextView = findViewById(R.id.eatTv_condition)
-
-        val switchDrinkTv: SwitchCompat = findViewById(R.id.switchTv_drink)
         val textDrinkTv: TextView = findViewById(R.id.drinkTv_condition)
 
         // get Database firebase
@@ -197,15 +255,15 @@ class MainActivity : AppCompatActivity(){
                     val dataEat = snapshot.child("servoMakan").value as Boolean
                     val dataDrink = snapshot.child("pumpMinum").value as Boolean
 
-                    switchEatTv.isChecked = dataEat
-                    if(switchEatTv.isChecked) {
+                    this@MainActivity.switchEat.isChecked = dataEat
+                    if(this@MainActivity.switchEat.isChecked) {
                         textEatTv.text = "Menyala"
                     }else {
                         textEatTv.text = "Mati"
                     }
 
-                    switchDrinkTv.isChecked = dataDrink
-                    if(switchDrinkTv.isChecked) {
+                    this@MainActivity.switchDrink.isChecked = dataDrink
+                    if(this@MainActivity.switchDrink.isChecked) {
                         textDrinkTv.text = "Menyala"
                     }else {
                         textDrinkTv.text= "Mati"
@@ -220,22 +278,28 @@ class MainActivity : AppCompatActivity(){
         }
         database.addValueEventListener(readListener)
 
-        switchEatTv.setOnClickListener {
-            val eat = switchEatTv.isChecked
-
+        this@MainActivity.switchEat.setOnClickListener {
+            val eat = this@MainActivity.switchEat.isChecked
             val mapDataSwitch = mapOf<String, Any>(
                 "servoMakan" to eat
             )
-
             database.updateChildren(mapDataSwitch).addOnSuccessListener {
-                Toast.makeText(this@MainActivity, "Success Update eat Switch", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@MainActivity,
+                    "Success Update eat Switch",
+                    Toast.LENGTH_SHORT
+                ).show()
             }.addOnFailureListener {
-                Toast.makeText(this@MainActivity, "failed update data because $it", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@MainActivity,
+                    "failed update data because $it",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
-        switchDrinkTv.setOnClickListener {
-            val drink = switchDrinkTv.isChecked
+        this@MainActivity.switchDrink.setOnClickListener {
+            val drink = this@MainActivity.switchDrink.isChecked
 
             val mapDataSwitch = mapOf<String, Any>(
                 "pumpMinum" to drink
@@ -423,11 +487,9 @@ class MainActivity : AppCompatActivity(){
     private fun setUpdateLightAndFan() {
         // get id component
 
-        val switchLightTv: SwitchCompat = findViewById(R.id.switchTv_light)
         val textLightTv: TextView = findViewById(R.id.lightTv_condition)
         val lightIconTv: ImageView = findViewById(R.id.lightIcon)
 
-        val switchFanTv: SwitchCompat = findViewById(R.id.switchTv_fan)
         val textFanTv: TextView = findViewById(R.id.fanTv_condition)
         val fanIconTv: ImageView = findViewById(R.id.fanIcon)
 
@@ -441,8 +503,8 @@ class MainActivity : AppCompatActivity(){
                     val dataLight = snapshot.child("lampu").value as Boolean
                     val dataFan = snapshot.child("kipas").value as Boolean
 
-                    switchLightTv.isChecked = dataLight
-                    if(switchLightTv.isChecked) {
+                    this@MainActivity.switchLight.isChecked = dataLight
+                    if(this@MainActivity.switchLight.isChecked) {
                         textLightTv.text = "Menyala"
                         lightIconTv.setImageResource(R.drawable.lamp)
                     }else {
@@ -450,8 +512,8 @@ class MainActivity : AppCompatActivity(){
                         lightIconTv.setImageResource(R.drawable.lamp_off)
                     }
 
-                    switchFanTv.isChecked = dataFan
-                    if(switchFanTv.isChecked) {
+                    this@MainActivity.switchFan.isChecked = dataFan
+                    if(this@MainActivity.switchFan.isChecked) {
                         textFanTv.text = "Menyala"
                         fanIconTv.setImageResource(R.drawable.fan_on)
                     }else {
@@ -468,8 +530,8 @@ class MainActivity : AppCompatActivity(){
         }
         database.addValueEventListener(readListener)
 
-        switchLightTv.setOnClickListener {
-            val light = switchLightTv.isChecked
+        this@MainActivity.switchLight.setOnClickListener {
+            val light = switchLight.isChecked
 
             val mapDataSwitch = mapOf<String, Any>(
                 "lampu" to light
@@ -482,8 +544,8 @@ class MainActivity : AppCompatActivity(){
             }
         }
 
-        switchFanTv.setOnClickListener {
-            val fan = switchFanTv.isChecked
+        this@MainActivity.switchFan.setOnClickListener {
+            val fan = this@MainActivity.switchFan.isChecked
 
             val mapDataSwitch = mapOf<String, Any>(
                 "kipas" to fan
