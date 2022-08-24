@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "55782080960",
-    "project_id": "rabbitcagemonitoring",
-    "storage_bucket": "rabbitcagemonitoring.appspot.com"
+    "project_number": "446254793327",
+    "firebase_url": "https://rabbitcagemonitoring-77d60-default-rtdb.firebaseio.com",
+    "project_id": "rabbitcagemonitoring-77d60",
+    "storage_bucket": "rabbitcagemonitoring-77d60.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:55782080960:android:37392db1029328faccc825",
+        "mobilesdk_app_id": "1:446254793327:android:fb19bbecdf4bf9790b439a",
         "android_client_info": {
           "package_name": "com.example.rabbitcagemonitoring"
         }
       },
       "oauth_client": [
         {
-          "client_id": "55782080960-9vfvjg3rjr7cq410uldpkchr9u69a0g4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.rabbitcagemonitoring",
-            "certificate_hash": "f0c7f1af5aad4876fc13be3d04605054286884a4"
-          }
-        },
-        {
-          "client_id": "55782080960-gjfsnh6otd7ahnhie4hcq2t9b17lbgk1.apps.googleusercontent.com",
+          "client_id": "446254793327-tk6m1bd81d13lm97d6o9d8fvcanf7g05.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDW4wz1MQxO0kme863Ec9pmNeK7c5wSGvc"
+          "current_key": "AIzaSyCV4dEhBzpAQmy7vppfQPIJcoCtJ5eX4oA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "55782080960-gjfsnh6otd7ahnhie4hcq2t9b17lbgk1.apps.googleusercontent.com",
+              "client_id": "446254793327-tk6m1bd81d13lm97d6o9d8fvcanf7g05.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
